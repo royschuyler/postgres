@@ -111,7 +111,25 @@ var row2 = worksheet2.getRow(5);
 row2.getCell(2).value = 'columnB';
 
 
-workbook.xlsx.writeFile('Debtors5.xlsx')
+
+//***************db Connect*************************************************
+const { Pool } = require('pg')
+const pool = new Pool({
+  user: 'royschuyler',
+  host: 'localhost',
+  database: 'main',
+  password: 'Hollie12',
+  port: 5432
+})
+
+pool.query('SELECT artist_name from main limit 10', (err, res) => {
+  console.log(err, res)
+  pool.end()
+})  
+
+
+
+//workbook.xlsx.writeFile('Debtors5.xlsx')
 
 
 

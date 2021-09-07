@@ -20,9 +20,8 @@
   },
   "homepage": "https://github.com/royschuyler/postgres#readme",
   "dependencies": {
-    "excel4node": "^1.7.2",
     "exceljs": "^4.3.0",
     "express": "^4.17.1",
-    "msexcel-builder": "0.0.2"
+    "pg": "^8.7.1"
   }
 }
