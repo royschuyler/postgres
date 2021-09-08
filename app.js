@@ -8,70 +8,59 @@ const port = 3000
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
+//***************db Connect*************************************************
+const { Pool } = require('pg')
+const pool = new Pool({
+  user: 'royschuyler',
+  host: 'localhost',
+  database: 'main',
+  password: 'Hollie12',
+  port: 5432
+})
+
+pool.query("SELECT * from main where artist_name = 'Adam Hood' and period = '2021M4' limit 10", (err, res) => {
 
 let workbook = new Excel.Workbook();
-let worksheet = workbook.addWorksheet('Debtors');
+let worksheet = workbook.addWorksheet('Artist');
 
 worksheet.columns = [
-  {header: 'First Name', key: 'firstName'},
-  {header: 'Last Name', key: 'lastName'},
-  {header: 'Purchase Price', key: 'purchasePrice'},
-  {header: 'Payments Made', key: 'paymentsMade'},
-  {header: 'Amount Remaining', key: 'amountRemaining'},
-  {header: '% Remaining', key: 'percentRemaining'}
+  {header: 'id', key: 'id'},
+  {header: 'period', key: 'period'},
+  {header: 'activity_period', key: 'activity_period'},
+  {header: 'retailer', key: 'retailer'},
+  {header: 'territory', key: 'territory'},
+  {header: 'orchard_upc', key: 'orchard_upc'},
+  {header: 'manufacture_upc', key: 'manufacture_upc'},
+  {header: 'project_code', key: 'project_code'},
+  {header: 'product_code', key: 'product_code'},
+  {header: 'sub_account', key: 'sub_account'},
+  {header: 'imprint_label', key: 'imprint_label'},
+  {header: 'artist_name', key: 'artist_name'},
+  {header: 'product_name', key: 'product_name'},
+  {header: 'track_name', key: 'track_name'},
+  {header: 'track_artist', key: 'track_artist'},
+  {header: 'isrc', key: 'isrc'},
+  {header: 'volume', key: 'volume'},
+  {header: 'track_integer', key: 'track_integer'},
+  {header: 'trans_type', key: 'trans_type'},
+  {header: 'trans_type_description', key: 'trans_type_description'},
+  {header: 'unit_price', key: 'unit_price'},
+  {header: 'discount', key: 'discount'},
+  {header: 'actual_price', key: 'actual_price'},
+  {header: 'quantity', key: 'quantity'},
+  {header: 'total', key: 'total'},
+  {header: 'adjusted_total', key: 'adjusted_total'},
+  {header: 'split_rate', key: 'split_rate'},
+  {header: 'label_share_net_receipts', key: 'label_share_net_receipts'},
+  {header: 'ringtone_publishing', key: 'ringtone_publishing'},
+  {header: 'cloud_publishing', key: 'cloud_publishing'},
+  {header: 'publishing', key: 'publishing'},
+  {header: 'mech_admin_fee', key: 'mech_admin_fee'},
+  {header: 'preferred_currency', key: 'preferred_currency'},
+  {header: 'updated_at', key: 'updated_at'},
+  {header: 'created_at', key: 'created_at'}
 ]
-
-var data = [{
-  firstName: 'John',
-  lastName: 'Bailey',
-  purchasePrice: 1000,
-  paymentsMade: 100
-}, {
-  firstName: 'Leonard',
-  lastName: 'Clark',
-  purchasePrice: 1000,
-  paymentsMade: 150
-}, {
-  firstName: 'Phil',
-  lastName: 'Knox',
-  purchasePrice: 1000,
-  paymentsMade: 200
-}, {
-  firstName: 'Sonia',
-  lastName: 'Glover',
-  purchasePrice: 1000,
-  paymentsMade: 250
-}, {
-  firstName: 'Adam',
-  lastName: 'Mackay',
-  purchasePrice: 1000,
-  paymentsMade: 350
-}, {
-  firstName: 'Lisa',
-  lastName: 'Ogden',
-  purchasePrice: 1000,
-  paymentsMade: 400
-}, {
-  firstName: 'Elizabeth',
-  lastName: 'Murray',
-  purchasePrice: 1000,
-  paymentsMade: 500
-}, {
-  firstName: 'Caroline',
-  lastName: 'Jackson',
-  purchasePrice: 1000,
-  paymentsMade: 350
-}, {
-  firstName: 'Kylie',
-  lastName: 'James',
-  purchasePrice: 1000,
-  paymentsMade: 900
-}, {
-  firstName: 'Harry',
-  lastName: 'Peake',
-  purchasePrice: 1000,
-  paymentsMade: 1000
-}]
+var data = res.rows;
 
 // Dump all the data into Excel
 data.forEach((e, index) => {
@@ -82,12 +71,6 @@ data.forEach((e, index) => {
   // We can add formulas pretty easily by providing the formula property.
   worksheet.addRow({
     ...e,
-    amountRemaining: {
-      formula: `=C${rowIndex}-D${rowIndex}`
-    },
-    percentRemaining: {
-      formula: `=E${rowIndex}/C${rowIndex}`
-    }
   })
 })
 
@@ -102,37 +85,25 @@ worksheet.columns.forEach(column => {
 // Note: in Excel the rows are 1 based, meaning the first row is 1 instead of 0.
 worksheet.getRow(1).font = {bold: true}
 
+  //console.log(err, res)
+  var name = res.rows[0].artist_name;
+  //console.log('name: ' + name)
+  console.log(res)
+  let worksheet2 = workbook.addWorksheet('Test');
+  var row = worksheet2.getRow(5);
+  row.getCell(1).value = 5;
+  var row2 = worksheet2.getRow(5);
+  row2.getCell(2).value = name;
 
-//new worksheet
-let worksheet2 = workbook.addWorksheet('Test');
-var row = worksheet2.getRow(5);
-row.getCell(1).value = 5;
-var row2 = worksheet2.getRow(5);
-row2.getCell(2).value = 'columnB';
+  
 
 
 
-//***************db Connect*************************************************
-const { Pool } = require('pg')
-const pool = new Pool({
-  user: 'royschuyler',
-  host: 'localhost',
-  database: 'main',
-  password: 'Hollie12',
-  port: 5432
-})
 
-pool.query('SELECT artist_name from main limit 10', (err, res) => {
-  console.log(err, res)
-  pool.end()
+workbook.xlsx.writeFile('Artist.xlsx')
+
+pool.end()
 })  
-
-
-
-//workbook.xlsx.writeFile('Debtors5.xlsx')
-
-
-
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
