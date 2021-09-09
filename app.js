@@ -21,9 +21,9 @@ const pool = new Pool({
   port: 5432
 })
 
-
+function wrap(artist){
 var workbook = new Excel.Workbook();
-pool.query("SELECT * from main where artist_name = 'Adam Hood' and period = '2021M3'", (err, res) => {
+pool.query("SELECT * from main where artist_name =" + "'" + artist + "'"+ " and period = '2021M3'", (err, res) => {
   console.log(res,err)
   
   
@@ -92,7 +92,7 @@ pool.query("SELECT * from main where artist_name = 'Adam Hood' and period = '202
   worksheet.getRow(1).font = {bold: true}
 
   //****************04**************************************
-  pool.query("SELECT * from main where artist_name = 'Adam Hood' and period = '2021M4'", (err, res) => {
+  pool.query("SELECT * from main where artist_name =" + "'" + artist + "'"+ " and period = '2021M4'", (err, res) => {
   console.log(res,err)
   
   
@@ -166,11 +166,15 @@ pool.query("SELECT * from main where artist_name = 'Adam Hood' and period = '202
 
 
 
-  workbook.xlsx.writeFile('Adam Hood.xlsx')
+  workbook.xlsx.writeFile(artist + '.xlsx')
 })  
 })  
 
-
+}
+var artistsArr = ['Josh Rennie-Hynes','Leftover Salmon','Phil Madeira','Mitchell Tenpenny']
+for(i=0;i<artistsArr.length;i++){
+  wrap(artistsArr[i])
+}
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
