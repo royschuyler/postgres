@@ -23,48 +23,80 @@ const pool = new Pool({
 
 function wrap(artist){
 var workbook = new Excel.Workbook();
-pool.query("SELECT * from main where artist_name =" + "'" + artist + "'"+ " and period = '2021M3'", (err, res) => {
+  pool.query("SELECT * from main where artist_name =" + "'" + artist + "'"+ " and period = '2021M3' order by retailer limit 10", (err, res) => {
   console.log(res,err)
   
   
   var worksheet = workbook.addWorksheet('0321 SH');
+  worksheet.getRow(18).values = [
+  'id', 
+  'period',
+  'activity_period',
+  'retailer',
+  'territory', 
+  'orchard_upc', 
+  'manufacture_upc',
+  'project_code', 
+  'product_code',
+  'sub_account',
+  'imprint_label',
+  'artist_name',
+  'product_name',
+  'track_name',
+  'isrc',
+  'volume',
+  'track_integer',
+  'trans_type',
+  'trans_type_description', 
+  'unit_price', 
+  'discount',
+  'actual_price',
+  'quantity',
+  'total',
+  'adjusted_total',
+  'split_rate',
+  'label_share_net_receipts',
+  'ringtone_publishing',
+  'cloud_publishing',
+  'publishing',
+  'mech_admin_fee',
+  'preferred_currency',
+  ];
 
   worksheet.columns = [
-    {header: 'id', key: 'id'},
-    {header: 'period', key: 'period'},
-    {header: 'activity_period', key: 'activity_period'},
-    {header: 'retailer', key: 'retailer'},
-    {header: 'territory', key: 'territory'},
-    {header: 'orchard_upc', key: 'orchard_upc'},
-    {header: 'manufacture_upc', key: 'manufacture_upc'},
-    {header: 'project_code', key: 'project_code'},
-    {header: 'product_code', key: 'product_code'},
-    {header: 'sub_account', key: 'sub_account'},
-    {header: 'imprint_label', key: 'imprint_label'},
-    {header: 'artist_name', key: 'artist_name'},
-    {header: 'product_name', key: 'product_name'},
-    {header: 'track_name', key: 'track_name'},
-    {header: 'track_artist', key: 'track_artist'},
-    {header: 'isrc', key: 'isrc'},
-    {header: 'volume', key: 'volume'},
-    {header: 'track_integer', key: 'track_integer'},
-    {header: 'trans_type', key: 'trans_type'},
-    {header: 'trans_type_description', key: 'trans_type_description'},
-    {header: 'unit_price', key: 'unit_price'},
-    {header: 'discount', key: 'discount'},
-    {header: 'actual_price', key: 'actual_price'},
-    {header: 'quantity', key: 'quantity'},
-    {header: 'total', key: 'total'},
-    {header: 'adjusted_total', key: 'adjusted_total'},
-    {header: 'split_rate', key: 'split_rate'},
-    {header: 'label_share_net_receipts', key: 'label_share_net_receipts'},
-    {header: 'ringtone_publishing', key: 'ringtone_publishing'},
-    {header: 'cloud_publishing', key: 'cloud_publishing'},
-    {header: 'publishing', key: 'publishing'},
-    {header: 'mech_admin_fee', key: 'mech_admin_fee'},
-    {header: 'preferred_currency', key: 'preferred_currency'},
-    {header: 'updated_at', key: 'updated_at'},
-    {header: 'created_at', key: 'created_at'}
+    {key: 'id'},
+    {key: 'period'},
+    {key: 'activity_period'},
+    {key: 'retailer'},
+    {key: 'territory'},
+    {key: 'orchard_upc'},
+    {key: 'manufacture_upc'},
+    {key: 'project_code'},
+    {key: 'product_code'},
+    {key: 'sub_account'},
+    {key: 'imprint_label'},
+    {key: 'artist_name'},
+    {key: 'product_name'},
+    {key: 'track_name'},
+    {key: 'track_artist'},
+    {key: 'isrc'},
+    {key: 'volume'},
+    {key: 'track_integer'},
+    {key: 'trans_type'},
+    {key: 'trans_type_description'},
+    {key: 'unit_price'},
+    {key: 'discount'},
+    {key: 'actual_price'},
+    {key: 'quantity'},
+    {key: 'total'},
+    {key: 'adjusted_total'},
+    {key: 'split_rate'},
+    {key: 'label_share_net_receipts'},
+    {key: 'ringtone_publishing'},
+    {key: 'cloud_publishing'},
+    {key: 'publishing'},
+    {key: 'mech_admin_fee'},
+    {key: 'preferred_currency'}
   ]
   var data = res.rows;
 
@@ -83,57 +115,89 @@ pool.query("SELECT * from main where artist_name =" + "'" + artist + "'"+ " and 
 
   // force the columns to be at least as long as their header row.
   // Have to take this approach because ExcelJS doesn't have an autofit property.
-  worksheet.columns.forEach(column => {
-    column.width = column.header.length < 12 ? 12 : column.header.length
-  })
+  // worksheet.columns.forEach(column => {
+  //   column.width = column.header.length < 12 ? 12 : column.header.length
+  // })
 
   // Make the header bold.
   // Note: in Excel the rows are 1 based, meaning the first row is 1 instead of 0.
-  worksheet.getRow(1).font = {bold: true}
+  worksheet.getRow(18).font = {bold: true}
 
   //****************04**************************************
-  pool.query("SELECT * from main where artist_name =" + "'" + artist + "'"+ " and period = '2021M4'", (err, res) => {
+  pool.query("SELECT * from main where artist_name =" + "'" + artist + "'"+ " and period = '2021M4' order by retailer limit 10", (err, res) => {
   console.log(res,err)
   
   
   var worksheet = workbook.addWorksheet('0421 SH');
+  worksheet.getRow(18).values = [
+  'id', 
+  'period',
+  'activity_period',
+  'retailer',
+  'territory', 
+  'orchard_upc', 
+  'manufacture_upc',
+  'project_code', 
+  'product_code',
+  'sub_account',
+  'imprint_label',
+  'artist_name',
+  'product_name',
+  'track_name',
+  'isrc',
+  'volume',
+  'track_integer',
+  'trans_type',
+  'trans_type_description', 
+  'unit_price', 
+  'discount',
+  'actual_price',
+  'quantity',
+  'total',
+  'adjusted_total',
+  'split_rate',
+  'label_share_net_receipts',
+  'ringtone_publishing',
+  'cloud_publishing',
+  'publishing',
+  'mech_admin_fee',
+  'preferred_currency',
+  ];
 
   worksheet.columns = [
-    {header: 'id', key: 'id'},
-    {header: 'period', key: 'period'},
-    {header: 'activity_period', key: 'activity_period'},
-    {header: 'retailer', key: 'retailer'},
-    {header: 'territory', key: 'territory'},
-    {header: 'orchard_upc', key: 'orchard_upc'},
-    {header: 'manufacture_upc', key: 'manufacture_upc'},
-    {header: 'project_code', key: 'project_code'},
-    {header: 'product_code', key: 'product_code'},
-    {header: 'sub_account', key: 'sub_account'},
-    {header: 'imprint_label', key: 'imprint_label'},
-    {header: 'artist_name', key: 'artist_name'},
-    {header: 'product_name', key: 'product_name'},
-    {header: 'track_name', key: 'track_name'},
-    {header: 'track_artist', key: 'track_artist'},
-    {header: 'isrc', key: 'isrc'},
-    {header: 'volume', key: 'volume'},
-    {header: 'track_integer', key: 'track_integer'},
-    {header: 'trans_type', key: 'trans_type'},
-    {header: 'trans_type_description', key: 'trans_type_description'},
-    {header: 'unit_price', key: 'unit_price'},
-    {header: 'discount', key: 'discount'},
-    {header: 'actual_price', key: 'actual_price'},
-    {header: 'quantity', key: 'quantity'},
-    {header: 'total', key: 'total'},
-    {header: 'adjusted_total', key: 'adjusted_total'},
-    {header: 'split_rate', key: 'split_rate'},
-    {header: 'label_share_net_receipts', key: 'label_share_net_receipts'},
-    {header: 'ringtone_publishing', key: 'ringtone_publishing'},
-    {header: 'cloud_publishing', key: 'cloud_publishing'},
-    {header: 'publishing', key: 'publishing'},
-    {header: 'mech_admin_fee', key: 'mech_admin_fee'},
-    {header: 'preferred_currency', key: 'preferred_currency'},
-    {header: 'updated_at', key: 'updated_at'},
-    {header: 'created_at', key: 'created_at'}
+    {key: 'id'},
+    {key: 'period'},
+    {key: 'activity_period'},
+    {key: 'retailer'},
+    {key: 'territory'},
+    {key: 'orchard_upc'},
+    {key: 'manufacture_upc'},
+    {key: 'project_code'},
+    {key: 'product_code'},
+    {key: 'sub_account'},
+    {key: 'imprint_label'},
+    {key: 'artist_name'},
+    {key: 'product_name'},
+    {key: 'track_name'},
+    {key: 'track_artist'},
+    {key: 'isrc'},
+    {key: 'volume'},
+    {key: 'track_integer'},
+    {key: 'trans_type'},
+    {key: 'trans_type_description'},
+    {key: 'unit_price'},
+    {key: 'discount'},
+    {key: 'actual_price'},
+    {key: 'quantity'},
+    {key: 'total'},
+    {key: 'adjusted_total'},
+    {key: 'split_rate'},
+    {key: 'label_share_net_receipts'},
+    {key: 'ringtone_publishing'},
+    {key: 'cloud_publishing'},
+    {key: 'publishing'},
+    {key: 'mech_admin_fee'},
+    {key: 'preferred_currency'}
   ]
   var data = res.rows;
 
@@ -152,13 +216,13 @@ pool.query("SELECT * from main where artist_name =" + "'" + artist + "'"+ " and 
 
   // force the columns to be at least as long as their header row.
   // Have to take this approach because ExcelJS doesn't have an autofit property.
-  worksheet.columns.forEach(column => {
-    column.width = column.header.length < 12 ? 12 : column.header.length
-  })
+  // worksheet.columns.forEach(column => {
+  //   column.width = column.header.length < 12 ? 12 : column.header.length
+  // })
 
   // Make the header bold.
   // Note: in Excel the rows are 1 based, meaning the first row is 1 instead of 0.
-  worksheet.getRow(1).font = {bold: true}
+  worksheet.getRow(18).font = {bold: true}
 
 
 
@@ -171,7 +235,9 @@ pool.query("SELECT * from main where artist_name =" + "'" + artist + "'"+ " and 
 })  
 
 }
-var artistsArr = ['Josh Rennie-Hynes','Leftover Salmon','Phil Madeira','Mitchell Tenpenny']
+//var artistsArr = ['Josh Rennie-Hynes','Leftover Salmon','Phil Madeira','Mitchell Tenpenny']
+var artistsArr = ['Josh Rennie-Hynes']
+
 for(i=0;i<artistsArr.length;i++){
   wrap(artistsArr[i])
 }
