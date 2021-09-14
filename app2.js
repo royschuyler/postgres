@@ -1,4 +1,5 @@
 const express = require('express')
+var async = require("async");
 const Excel = require('exceljs');
 const app = express()
 const port = 3000
@@ -25,22 +26,27 @@ var worksheet = workbook.addWorksheet('0321 SH');
 
   //********* Channel Report ****************************
 
-pool.query("SELECT distinct(retailer) from main where artist_name =" + "'" + artist + "'"+ " and period = '2021M3' and label_share_net_receipts > .000000001", (err, res) => {
+
+pool.query("SELECT distinct(trans_type_description), SUM(quantity) as quantity, SUM(label_share_net_receipts) as revenue from main where artist_name =" + "'" + artist + "'"+ " and period = '2021M3' and quantity > 0 group by trans_type_description", (err, res) => {
 //console.log(res,err)
 var resp = res.rows;
-//console.log(resp)
+console.log(resp)
 //console.log(resp[0].retailer)
 //var arr = []
 
 //HEADERS
+worksheet.getCell('A1').value = 'CHANNEL REPORT';
+worksheet.getCell('A2').value = 'TRANSACTION TYPE';
 for(i=0;i<resp.length;i++){
   //arr.push(resp[i].retailer)
-  worksheet.getCell('A' + (i +2)).value = resp[i].retailer;
+  worksheet.getCell('A' + (i +3)).value = resp[i].trans_type_description;
+  worksheet.getCell('B' + (i +3)).value = resp[i].quantity;
+  worksheet.getCell('C' + (i +3)).value = '$' + resp[i].revenue.toFixed(2);
 }
 //console.log(arr)
 
-// worksheet.getCell('A1').value = 'CHANNEL REPORT';
-// worksheet.getCell('A2').value = 'TRANSACTION TYPE';
+worksheet.getCell('A1').value = 'CHANNEL REPORT';
+worksheet.getCell('A2').value = 'TRANSACTION TYPE';
 // worksheet.getCell('A3').value = 'Subscription Audio Streams';
 // worksheet.getCell('A4').value = 'Download Tracks';
 // worksheet.getCell('A5').value = 'Ad-Supported Audio Streams';
