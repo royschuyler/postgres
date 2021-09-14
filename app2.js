@@ -30,9 +30,7 @@ var worksheet = workbook.addWorksheet('0321 SH');
 pool.query("SELECT distinct(trans_type_description), SUM(quantity) as quantity, SUM(label_share_net_receipts) as revenue from main where artist_name =" + "'" + artist + "'"+ " and period = '2021M3' and quantity > 0 group by trans_type_description", (err, res) => {
 //console.log(res,err)
 var resp = res.rows;
-console.log(resp)
-//console.log(resp[0].retailer)
-//var arr = []
+var space = resp.length
 
 //HEADERS
 worksheet.getCell('A1').value = 'CHANNEL REPORT';
@@ -67,7 +65,7 @@ worksheet.getCell('A2').value = 'TRANSACTION TYPE';
   pool.query("SELECT * from main where artist_name =" + "'" + artist + "'"+ " and period = '2021M3' order by retailer, orchard_upc, product_name,track_name limit 10", (err, res) => {
   //console.log(res,err)
   
-  worksheet.getRow(18).values = [
+  worksheet.getRow(space + 7).values = [
   'period',
   'activity_period',
   'retailer',
