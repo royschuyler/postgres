@@ -54,7 +54,7 @@ var sourceSpace = resp.length
 
 worksheet.getCell('E1').value = 'Source Report';
 worksheet.getCell('E2').value = 'SOURCE TYPE';
-worksheet.getCell('E3').value = 'REVENUE';
+worksheet.getCell('F2').value = 'REVENUE';
 for(i=0;i<resp.length;i++){
   //arr.push(resp[i].retailer)
   worksheet.getCell('E' + (i +3)).value = resp[i].retailer;
@@ -156,12 +156,12 @@ for(i=0;i<resp.length;i++){
   // force the columns to be at least as long as their header row.
   // Have to take this approach because ExcelJS doesn't have an autofit property.
   worksheet.columns.forEach(column => {
-    column.width = worksheet.getRow(18).values.length
+    column.width = worksheet.getRow(sourceSpace + 9).values.length
   })
 
   // Make the header bold.
   // Note: in Excel the rows are 1 based, meaning the first row is 1 instead of 0.
-  worksheet.getRow(18).font = {bold: true}
+  worksheet.getRow(sourceSpace + 9).font = {bold: true}
   //************** END data dump *********************************
 
 
