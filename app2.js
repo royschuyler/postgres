@@ -41,21 +41,25 @@ for(i=0;i<resp.length;i++){
   worksheet.getCell('B' + (i +3)).value = resp[i].quantity;
   worksheet.getCell('C' + (i +3)).value = '$' + resp[i].revenue.toFixed(2);
 }
-//console.log(arr)
-
-worksheet.getCell('A1').value = 'CHANNEL REPORT';
-worksheet.getCell('A2').value = 'TRANSACTION TYPE';
-// worksheet.getCell('A3').value = 'Subscription Audio Streams';
-// worksheet.getCell('A4').value = 'Download Tracks';
-// worksheet.getCell('A5').value = 'Ad-Supported Audio Streams';
-// worksheet.getCell('A6').value = 'Non-interactive Radio';
-// worksheet.getCell('A7').value = 'Cloud Match Units';
-// worksheet.getCell('A8').value = 'Total';
-// worksheet.getCell('B2').value = 'QUANTITY';
-// worksheet.getCell('C2').value = 'REVENUE';
 
 
+//********************************** END Channel Report *********************************************
+//********* Begin Source Report ************************
+pool.query("SELECT distinct(retailer), SUM(label_share_net_receipts) as revenue from main where artist_name =" + "'" + artist + "'"+ " and period = '2021M3' and label_share_net_receipts > 0.00000001 group by retailer", (err, res) => {
+//console.log(res,err)
+var resp = res.rows;
+var sourceSpace = resp.length
 
+//HEADERS
+
+worksheet.getCell('E1').value = 'Source Report';
+worksheet.getCell('E2').value = 'SOURCE TYPE';
+worksheet.getCell('E3').value = 'REVENUE';
+for(i=0;i<resp.length;i++){
+  //arr.push(resp[i].retailer)
+  worksheet.getCell('E' + (i +3)).value = resp[i].retailer;
+  worksheet.getCell('F' + (i +3)).value = '$' + resp[i].revenue;
+}
 
 
 //********* End Source Report ************************
@@ -65,7 +69,7 @@ worksheet.getCell('A2').value = 'TRANSACTION TYPE';
   pool.query("SELECT * from main where artist_name =" + "'" + artist + "'"+ " and period = '2021M3' order by retailer, orchard_upc, product_name,track_name limit 10", (err, res) => {
   //console.log(res,err)
   
-  worksheet.getRow(space + 7).values = [
+  worksheet.getRow(sourceSpace + 9).values = [
   'period',
   'activity_period',
   'retailer',
@@ -166,7 +170,8 @@ worksheet.getCell('A2').value = 'TRANSACTION TYPE';
 
   workbook.xlsx.writeFile(artist + '.xlsx')
 })  
-})  
+})
+})   
 }
 
 //var artistsArr = ['Josh Rennie-Hynes','Leftover Salmon','Phil Madeira','Mitchell Tenpenny']
