@@ -59,7 +59,7 @@ async function wrap(artist) {
     worksheet.getCell('F2').value = 'REVENUE'
     for(i = 0; i < resp.length; i++){
       worksheet.getCell('E' + (i +3)).value = resp[i].retailer
-      worksheet.getCell('F' + (i +3)).value = '$' + resp[i].revenue
+      worksheet.getCell('F' + (i +3)).value = '$' + resp[i].revenue.toFixed(2)
     }
   
   } catch (error) {
@@ -83,14 +83,17 @@ async function wrap(artist) {
     worksheet.getCell('L2').value = 'REVENUE'
     for(i = 0; i < resp.length; i++){
 
-      //var str = resp[i].row
       worksheet.mergeCells('H' + (i + 3 + i) + ':' + 'H' + (i + 4 + i))
       worksheet.mergeCells('J' + (i + 3 + i) + ':' + 'J' + (i + 4 + i))
       worksheet.mergeCells('L' + (i + 3 + i) + ':' + 'L' + (i + 4 + i))
+
       worksheet.getCell('H' + (i + 3 + i)).value = resp[i].track_name
       worksheet.getCell('J' + (i + 3 + i)).value = artist
-      worksheet.getCell('L' + (i + 3 + i)).value = resp[i].revenue
-     
+      worksheet.getCell('L' + (i + 3 + i)).value = '$' + resp[i].revenue.toFixed(2)
+
+      worksheet.getCell('K' + (i + 3 + i)).value = resp[i].product_name
+      worksheet.getCell('K' + (i + 4 + i)).value = 'UPC: ' + resp[i].orchard_upc
+
     }
   
   } catch (error) {
@@ -98,7 +101,13 @@ async function wrap(artist) {
   }
 
 
-
+/*
+      track_name: 'Top of the World',
+      revenue: 15.092159,
+      product_name: 'Patty',
+      orchard_upc: '195497158522'
+    }
+*/
 
 
 
@@ -107,7 +116,7 @@ async function wrap(artist) {
   //********* Start data dump *********************************
   try {
     let res = await DataDumpQuery(pool, artist)
-    worksheet.getRow(trackSpace + 9).values = worksheetValues
+    worksheet.getRow(trackSpace + 7).values = worksheetValues
     worksheet.columns = worksheetColumns
     let data = res.rows
 
@@ -121,13 +130,13 @@ async function wrap(artist) {
 
     // force the columns to be at least as long as their header row.
     // Have to take this approach because ExcelJS doesn't have an autofit property.
-    worksheet.columns.forEach(column => {
-      column.width = worksheet.getRow(trackSpace + 9).values.length
-    })
+    // worksheet.columns.forEach(column => {
+    //   column.width = worksheet.getRow(trackSpace + 7).values.length
+    // })
 
     // Make the header bold.
     // Note: in Excel the rows are 1 based, meaning the first row is 1 instead of 0.
-    worksheet.getRow(trackSpace + 9).font = {bold: true}
+    worksheet.getRow(trackSpace + 7).font = {bold: true}
   } catch (error) {
     console.log(error)
   }
