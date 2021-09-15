@@ -1,5 +1,4 @@
 const express = require('express')
-var async = require("async");
 const Excel = require('exceljs');
 const app = express()
 const port = 3000

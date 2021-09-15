@@ -19,9 +19,9 @@ const pool = new Pool({
 })
 
 function wrap(artist){
-var workbook = new Excel.Workbook();
+let workbook = new Excel.Workbook();
 
-var worksheet = workbook.addWorksheet('0321 SH');
+let worksheet = workbook.addWorksheet('0321 SH');
 
   //********* Channel Report ****************************
 //HEADERS
@@ -40,41 +40,41 @@ worksheet.getCell('C2').value = 'REVENUE';
   pool.query("SELECT SUM(quantity) from main where period = '2021M3' and artist_name =" + "'" + artist + "'", (err, res) => {
   //console.log(res,err)
   //console.log(res.rows[0].sum)
-  var sum = res.rows[0].sum;
+  let sum = res.rows[0].sum;
   if(!sum){
     sum = 0
   }
   worksheet.getCell('B8').value = sum;
 
   pool.query("SELECT SUM(quantity) from main where trans_type_description = 'Subscription Audio Streams' and period = '2021M3' and artist_name =" + "'" + artist + "'", (err, res) => {
-  var sum = res.rows[0].sum;
+  let sum = res.rows[0].sum;
   if(!sum){
     sum = 0
   }
   worksheet.getCell('B3').value = sum;
 
   pool.query("SELECT SUM(quantity) from main where trans_type_description = 'Download Tracks' and period = '2021M3' and artist_name =" + "'" + artist + "'", (err, res) => {
-  var sum = res.rows[0].sum;
+  let sum = res.rows[0].sum;
   if(!sum){
     sum = 0
   }
   worksheet.getCell('B4').value = sum;
 
   pool.query("SELECT SUM(quantity) from main where trans_type_description = 'Ad-Supported Audio Streams' and period = '2021M3' and artist_name =" + "'" + artist + "'", (err, res) => {
-  var sum = res.rows[0].sum;
+  let sum = res.rows[0].sum;
   if(!sum){
     sum = 0
   }  worksheet.getCell('B5').value = sum;
 
   pool.query("SELECT SUM(quantity) from main where trans_type_description = 'Non-interactive Radio' and period = '2021M3' and artist_name =" + "'" + artist + "'", (err, res) => {
-  var sum = res.rows[0].sum;
+  let sum = res.rows[0].sum;
   if(!sum){
     sum = 0
   }
   worksheet.getCell('B6').value = sum;
 
   pool.query("SELECT SUM(quantity) from main where trans_type_description = 'Cloud Match Units' and period = '2021M3' and artist_name =" + "'" + artist + "'", (err, res) => {
-  var sum = res.rows[0].sum;
+  let sum = res.rows[0].sum;
   if(!sum){
     sum = 0
   }
@@ -82,7 +82,7 @@ worksheet.getCell('C2').value = 'REVENUE';
 
 // Revenue ************************************
   pool.query("SELECT SUM(label_share_net_receipts) from main where period = '2021M3' and artist_name =" + "'" + artist + "'", (err, res) => {
-  var sum = res.rows[0].sum;
+  let sum = res.rows[0].sum;
   if(!sum){
     sum = 0
   }
@@ -90,7 +90,7 @@ worksheet.getCell('C2').value = 'REVENUE';
   worksheet.getCell('C8').alignment = { vertical: 'middle', horizontal: 'right' };
 
   pool.query("SELECT SUM(label_share_net_receipts) from main where trans_type_description = 'Subscription Audio Streams' and period = '2021M3' and artist_name =" + "'" + artist + "'", (err, res) => {
-  var sum = res.rows[0].sum;
+  let sum = res.rows[0].sum;
   if(!sum){
     sum = 0
   }
@@ -98,7 +98,7 @@ worksheet.getCell('C2').value = 'REVENUE';
   worksheet.getCell('C3').alignment = { vertical: 'middle', horizontal: 'right' };
 
   pool.query("SELECT SUM(label_share_net_receipts) from main where trans_type_description = 'Download Tracks' and period = '2021M3' and artist_name =" + "'" + artist + "'", (err, res) => {
-  var sum = res.rows[0].sum;
+  let sum = res.rows[0].sum;
   if(!sum){
     sum = 0
   }
@@ -106,14 +106,14 @@ worksheet.getCell('C2').value = 'REVENUE';
   worksheet.getCell('C4').alignment = { vertical: 'middle', horizontal: 'right' };
 
   pool.query("SELECT SUM(label_share_net_receipts) from main where trans_type_description = 'Ad-Supported Audio Streams' and period = '2021M3' and artist_name =" + "'" + artist + "'", (err, res) => {
-  var sum = res.rows[0].sum;
+  let sum = res.rows[0].sum;
   if(!sum){
     sum = 0
   }  worksheet.getCell('C5').value = '$' + sum.toFixed(2);
   worksheet.getCell('C5').alignment = { vertical: 'middle', horizontal: 'right' };
 
   pool.query("SELECT SUM(label_share_net_receipts) from main where trans_type_description = 'Non-interactive Radio' and period = '2021M3' and artist_name =" + "'" + artist + "'", (err, res) => {
-  var sum = res.rows[0].sum;
+  let sum = res.rows[0].sum;
   if(!sum){
     sum = 0
   }
@@ -121,7 +121,7 @@ worksheet.getCell('C2').value = 'REVENUE';
   worksheet.getCell('C6').alignment = { vertical: 'middle', horizontal: 'right' };
 
   pool.query("SELECT SUM(label_share_net_receipts) from main where trans_type_description = 'Cloud Match Units' and period = '2021M3' and artist_name =" + "'" + artist + "'", (err, res) => {
-  var sum = res.rows[0].sum;
+  let sum = res.rows[0].sum;
   if(!sum){
     sum = 0
   }
@@ -132,10 +132,10 @@ worksheet.getCell('C2').value = 'REVENUE';
 //********* Begin Source Report ************************
 //   pool.query("SELECT distinct(retailer) from main where artist_name =" + "'" + artist + "'"+ " and period = '2021M3' and label_share_net_receipts > .000000001", (err, res) => {
 //   //console.log(res,err)
-//   var resp = res.rows;
+//   let resp = res.rows;
 //   console.log(resp[0].retailer)
 // for(i=0;i<resp.length;i++){
-//   var test
+//   let test
 // }
 
 //Source Report HEADERS
@@ -158,7 +158,7 @@ worksheet.getCell('F2').value = 'REVENUE';
 
 
   pool.query("SELECT SUM(label_share_net_receipts) from main where retailer = 'Spotify' and period = '2021M3' and artist_name =" + "'" + artist + "'", (err, res) => {
-  var sum = res.rows[0].sum;
+  let sum = res.rows[0].sum;
   if(!sum){
     sum = 0
   }
@@ -166,7 +166,7 @@ worksheet.getCell('F2').value = 'REVENUE';
   worksheet.getCell('F3').alignment = { vertical: 'middle', horizontal: 'right' };
 
   pool.query("SELECT SUM(label_share_net_receipts) from main where retailer = 'iTunes/Apple' and period = '2021M3' and artist_name =" + "'" + artist + "'", (err, res) => {
-  var sum = res.rows[0].sum;
+  let sum = res.rows[0].sum;
   if(!sum){
     sum = 0
   }
@@ -175,7 +175,7 @@ worksheet.getCell('F2').value = 'REVENUE';
 
 
   pool.query("SELECT SUM(label_share_net_receipts) from main where retailer = 'Amazon Unlimited' and period = '2021M3' and artist_name =" + "'" + artist + "'", (err, res) => {
-  var sum = res.rows[0].sum;
+  let sum = res.rows[0].sum;
   if(!sum){
     sum = 0
   }
@@ -183,7 +183,7 @@ worksheet.getCell('F2').value = 'REVENUE';
   worksheet.getCell('F5').alignment = { vertical: 'middle', horizontal: 'right' };
 
   pool.query("SELECT SUM(label_share_net_receipts) from main where retailer = 'YouTube Subscription' and period = '2021M3' and artist_name =" + "'" + artist + "'", (err, res) => {
-  var sum = res.rows[0].sum;
+  let sum = res.rows[0].sum;
   if(!sum){
     sum = 0
   }
@@ -191,7 +191,7 @@ worksheet.getCell('F2').value = 'REVENUE';
   worksheet.getCell('F6').alignment = { vertical: 'middle', horizontal: 'right' };
 
   pool.query("SELECT SUM(label_share_net_receipts) from main where retailer = 'Amazon Music' and period = '2021M3' and artist_name =" + "'" + artist + "'", (err, res) => {
-  var sum = res.rows[0].sum;
+  let sum = res.rows[0].sum;
   if(!sum){
     sum = 0
   }
@@ -199,7 +199,7 @@ worksheet.getCell('F2').value = 'REVENUE';
   worksheet.getCell('F7').alignment = { vertical: 'middle', horizontal: 'right' };
 
   pool.query("SELECT SUM(label_share_net_receipts) from main where retailer = 'Deezer' and period = '2021M3' and artist_name =" + "'" + artist + "'", (err, res) => {
-  var sum = res.rows[0].sum;
+  let sum = res.rows[0].sum;
   if(!sum){
     sum = 0
   }
@@ -207,7 +207,7 @@ worksheet.getCell('F2').value = 'REVENUE';
   worksheet.getCell('F8').alignment = { vertical: 'middle', horizontal: 'right' };
 
   pool.query("SELECT SUM(label_share_net_receipts) from main where retailer = 'YouTube' and period = '2021M3' and artist_name =" + "'" + artist + "'", (err, res) => {
-  var sum = res.rows[0].sum;
+  let sum = res.rows[0].sum;
   if(!sum){
     sum = 0
   }
@@ -215,7 +215,7 @@ worksheet.getCell('F2').value = 'REVENUE';
   worksheet.getCell('F9').alignment = { vertical: 'middle', horizontal: 'right' };
 
   pool.query("SELECT SUM(label_share_net_receipts) from main where retailer = 'Pandora' and period = '2021M3' and artist_name =" + "'" + artist + "'", (err, res) => {
-  var sum = res.rows[0].sum;
+  let sum = res.rows[0].sum;
   if(!sum){
     sum = 0
   }
@@ -223,7 +223,7 @@ worksheet.getCell('F2').value = 'REVENUE';
   worksheet.getCell('F10').alignment = { vertical: 'middle', horizontal: 'right' };
 
   pool.query("SELECT SUM(label_share_net_receipts) from main where retailer = 'Line' and period = '2021M3' and artist_name =" + "'" + artist + "'", (err, res) => {
-  var sum = res.rows[0].sum;
+  let sum = res.rows[0].sum;
   if(!sum){
     sum = 0
   }
@@ -231,7 +231,7 @@ worksheet.getCell('F2').value = 'REVENUE';
   worksheet.getCell('F11').alignment = { vertical: 'middle', horizontal: 'right' };
 
   pool.query("SELECT SUM(label_share_net_receipts) from main where retailer = 'Napster' and period = '2021M3' and artist_name =" + "'" + artist + "'", (err, res) => {
-  var sum = res.rows[0].sum;
+  let sum = res.rows[0].sum;
   if(!sum){
     sum = 0
   }
@@ -239,7 +239,7 @@ worksheet.getCell('F2').value = 'REVENUE';
   worksheet.getCell('F12').alignment = { vertical: 'middle', horizontal: 'right' };
 
   pool.query("SELECT SUM(label_share_net_receipts) from main where retailer = 'Boomplay' and period = '2021M3' and artist_name =" + "'" + artist + "'", (err, res) => {
-  var sum = res.rows[0].sum;
+  let sum = res.rows[0].sum;
   if(!sum){
     sum = 0
   }
@@ -247,7 +247,7 @@ worksheet.getCell('F2').value = 'REVENUE';
   worksheet.getCell('F13').alignment = { vertical: 'middle', horizontal: 'right' };
 
   pool.query("SELECT SUM(label_share_net_receipts) from main where retailer = 'NetEase' and period = '2021M3' and artist_name =" + "'" + artist + "'", (err, res) => {
-  var sum = res.rows[0].sum;
+  let sum = res.rows[0].sum;
   if(!sum){
     sum = 0
   }
@@ -255,7 +255,7 @@ worksheet.getCell('F2').value = 'REVENUE';
   worksheet.getCell('F14').alignment = { vertical: 'middle', horizontal: 'right' };
 
   pool.query("SELECT SUM(label_share_net_receipts) from main where period = '2021M3' and artist_name =" + "'" + artist + "'", (err, res) => {
-  var sum = res.rows[0].sum;
+  let sum = res.rows[0].sum;
   if(!sum){
     sum = 0
   }
@@ -277,7 +277,6 @@ worksheet.getCell('F2').value = 'REVENUE';
 //********* Start data dump *********************************
 
   pool.query("SELECT * from main where artist_name =" + "'" + artist + "'"+ " and period = '2021M3' order by retailer, orchard_upc, product_name,track_name limit 10", (err, res) => {
-  //console.log(res,err)
   
   worksheet.getRow(18).values = [
   'period',
@@ -348,7 +347,7 @@ worksheet.getCell('F2').value = 'REVENUE';
     {key: 'mech_admin_fee'},
     {key: 'preferred_currency'}
   ]
-  var data = res.rows;
+  let data = res.rows;
 
   // Dump all the data into Excel
   data.forEach((e, index) => {
@@ -381,7 +380,7 @@ worksheet.getCell('F2').value = 'REVENUE';
   //console.log(res,err)
   
   
-  var worksheet = workbook.addWorksheet('0421 SH');
+  let worksheet = workbook.addWorksheet('0421 SH');
 //********* Channel Report ****************************
 
 worksheet.getCell('A1').value = 'CHANNEL REPORT'
@@ -459,7 +458,7 @@ worksheet.getCell('A1').value = 'CHANNEL REPORT'
     {key: 'mech_admin_fee'},
     {key: 'preferred_currency'}
   ]
-  var data = res.rows;
+  let data = res.rows;
 
   // Dump all the data into Excel
   data.forEach((e, index) => {
@@ -519,8 +518,8 @@ worksheet.getCell('A1').value = 'CHANNEL REPORT'
 })
 }
 
-//var artistsArr = ['Josh Rennie-Hynes','Leftover Salmon','Phil Madeira','Mitchell Tenpenny']
-var artistsArr = ['Josh Rennie-Hynes']
+//let artistsArr = ['Josh Rennie-Hynes','Leftover Salmon','Phil Madeira','Mitchell Tenpenny']
+let artistsArr = ['Josh Rennie-Hynes']
 
 for(i=0;i<artistsArr.length;i++){
   wrap(artistsArr[i])
