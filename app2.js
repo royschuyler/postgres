@@ -47,11 +47,11 @@ async function wrap(artist) {
   //********************************** END Channel Report *********************************************
   
   //********* Begin Source Report ************************
-  let sourceSpace
+  //let sourceSpace
   try {
     let res = await SourceReportQuery(pool, artist)
     let resp = res.rows
-    sourceSpace = resp.length
+    //sourceSpace = resp.length
   
     // HEADERS
     worksheet.getCell('E1').value = 'Source Report'
@@ -67,11 +67,12 @@ async function wrap(artist) {
   }
   //********* End Source Report ************************
   //********* Start Track Report ************************
-  //let sourceSpace
+  let trackSpace
   try {
     let res = await TrackReportQuery(pool, artist)
     let resp = res.rows
-    //sourceSpace = resp.length
+    trackSpace = res.rowCount * 2
+    console.log(res)
   
     // HEADERS
     worksheet.getCell('H1').value = 'Track Report'
@@ -81,10 +82,15 @@ async function wrap(artist) {
     worksheet.getCell('K2').value = 'PRODUCT'
     worksheet.getCell('L2').value = 'REVENUE'
     for(i = 0; i < resp.length; i++){
-      var str = resp[i].row
-      worksheet.getCell('H' + (i +3)).value = resp[i].track_name
-      worksheet.getCell('J' + (i +3)).value = artist
-      worksheet.getCell('L' + (i +3)).value = resp[i].revenue
+
+      //var str = resp[i].row
+      worksheet.mergeCells('H' + (i + 3 + i) + ':' + 'H' + (i + 4 + i))
+      worksheet.mergeCells('J' + (i + 3 + i) + ':' + 'J' + (i + 4 + i))
+      worksheet.mergeCells('L' + (i + 3 + i) + ':' + 'L' + (i + 4 + i))
+      worksheet.getCell('H' + (i + 3 + i)).value = resp[i].track_name
+      worksheet.getCell('J' + (i + 3 + i)).value = artist
+      worksheet.getCell('L' + (i + 3 + i)).value = resp[i].revenue
+     
     }
   
   } catch (error) {
@@ -101,7 +107,7 @@ async function wrap(artist) {
   //********* Start data dump *********************************
   try {
     let res = await DataDumpQuery(pool, artist)
-    worksheet.getRow(sourceSpace + 9).values = worksheetValues
+    worksheet.getRow(trackSpace + 9).values = worksheetValues
     worksheet.columns = worksheetColumns
     let data = res.rows
 
@@ -116,12 +122,12 @@ async function wrap(artist) {
     // force the columns to be at least as long as their header row.
     // Have to take this approach because ExcelJS doesn't have an autofit property.
     worksheet.columns.forEach(column => {
-      column.width = worksheet.getRow(sourceSpace + 9).values.length
+      column.width = worksheet.getRow(trackSpace + 9).values.length
     })
 
     // Make the header bold.
     // Note: in Excel the rows are 1 based, meaning the first row is 1 instead of 0.
-    worksheet.getRow(sourceSpace + 9).font = {bold: true}
+    worksheet.getRow(trackSpace + 9).font = {bold: true}
   } catch (error) {
     console.log(error)
   }
