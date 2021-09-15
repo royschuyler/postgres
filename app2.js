@@ -28,7 +28,7 @@ var worksheet = workbook.addWorksheet('0321 SH');
 
 
 pool.query("SELECT distinct(trans_type_description), SUM(quantity) as quantity, SUM(label_share_net_receipts) as revenue from main where artist_name =" + "'" + artist + "'"+ " and period = '2021M3' and quantity > 0 group by trans_type_description", (err, res) => {
-//console.log(res,err)
+console.log(res,err)
 var resp = res.rows;
 var space = resp.length
 
@@ -63,13 +63,37 @@ for(i=0;i<resp.length;i++){
 
 
 //********* End Source Report ************************
+//********* Begin Track Report ************************
+pool.query("select distinct (track_name,orchard_upc,product_name), SUM(label_share_net_receipts) as revenue from main where activity_period = '2021M3' and artist_name =" + "'" + artist + "'" + " group by track_name,orchard_upc,product_name order by revenue desc", (err, res) => {
+console.log(res,err)
+var resp = res.rows;
+var trackSpace = resp.length
+
+//HEADERS
+
+worksheet.getCell('H1').value = 'Track Report';
+worksheet.getCell('H2').value = 'TRACK';
+worksheet.getCell('I2').value = 'VERSION';
+worksheet.getCell('J2').value = 'ARTIST';
+worksheet.getCell('K2').value = 'PRODUCT';
+worksheet.getCell('L2').value = 'REVENUE';
+for(i=0;i<resp.length;i++){
+  //arr.push(resp[i].retailer)
+  worksheet.getCell('H' + (i +3)).value = resp[i].row.split(',')[0];
+  worksheet.getCell('J' + (i +3)).value = artist;
+  worksheet.getCell('L' + (i +3)).value = '$' + resp[i].revenue;
+}
+
+
+
+//********* End Track Report ************************
 
 //********* Start data dump *********************************
 
   pool.query("SELECT * from main where artist_name =" + "'" + artist + "'"+ " and period = '2021M3' order by retailer, orchard_upc, product_name,track_name limit 10", (err, res) => {
   //console.log(res,err)
   
-  worksheet.getRow(sourceSpace + 9).values = [
+  worksheet.getRow(trackSpace + 9).values = [
   'period',
   'activity_period',
   'retailer',
@@ -156,12 +180,12 @@ for(i=0;i<resp.length;i++){
   // force the columns to be at least as long as their header row.
   // Have to take this approach because ExcelJS doesn't have an autofit property.
   worksheet.columns.forEach(column => {
-    column.width = worksheet.getRow(sourceSpace + 9).values.length
+    column.width = worksheet.getRow(trackSpace + 9).values.length
   })
 
   // Make the header bold.
   // Note: in Excel the rows are 1 based, meaning the first row is 1 instead of 0.
-  worksheet.getRow(sourceSpace + 9).font = {bold: true}
+  worksheet.getRow(trackSpace + 9).font = {bold: true}
   //************** END data dump *********************************
 
 
@@ -172,6 +196,7 @@ for(i=0;i<resp.length;i++){
 })  
 })
 })   
+}) 
 }
 
 //var artistsArr = ['Josh Rennie-Hynes','Leftover Salmon','Phil Madeira','Mitchell Tenpenny']
