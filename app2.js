@@ -3,7 +3,7 @@ const Excel = require('exceljs')
 const app = express()
 const port = 3000
 
-const { ChannelReportQuery, SourceReportQuery, DataDumpQuery } = require('./queries')
+const { ChannelReportQuery, SourceReportQuery, TrackReportQuery, DataDumpQuery } = require('./queries')
 const { worksheetValues, worksheetColumns  } = require('./constants')
 
 app.get('/', (req, res) => {
@@ -33,6 +33,8 @@ async function wrap(artist) {
     // HEADERS
     worksheet.getCell('A1').value = 'CHANNEL REPORT'
     worksheet.getCell('A2').value = 'TRANSACTION TYPE'
+    worksheet.getCell('B2').value = 'QUANTITY'
+    worksheet.getCell('C2').value = 'REVENUE'
     for (i = 0; i < resp.length; i++) {
       //arr.push(resp[i].retailer)
       worksheet.getCell('A' + (i +3)).value = resp[i].trans_type_description
@@ -53,7 +55,7 @@ async function wrap(artist) {
   
     // HEADERS
     worksheet.getCell('E1').value = 'Source Report'
-    worksheet.getCell('E2').value = 'SOURCE TYPE'
+    worksheet.getCell('E2').value = 'SOURCE'
     worksheet.getCell('F2').value = 'REVENUE'
     for(i = 0; i < resp.length; i++){
       worksheet.getCell('E' + (i +3)).value = resp[i].retailer
@@ -64,6 +66,36 @@ async function wrap(artist) {
     console.log(error)
   }
   //********* End Source Report ************************
+  //********* Start Track Report ************************
+  //let sourceSpace
+  try {
+    let res = await TrackReportQuery(pool, artist)
+    let resp = res.rows
+    //sourceSpace = resp.length
+  
+    // HEADERS
+    worksheet.getCell('H1').value = 'Track Report'
+    worksheet.getCell('H2').value = 'TRACK'
+    worksheet.getCell('I2').value = 'VERSION'
+    worksheet.getCell('J2').value = 'ARTIST'
+    worksheet.getCell('K2').value = 'PRODUCT'
+    worksheet.getCell('L2').value = 'REVENUE'
+    for(i = 0; i < resp.length; i++){
+      worksheet.getCell('H' + (i +3)).value = resp[i].row.split(',')[0]
+      worksheet.getCell('J' + (i +3)).value = artist
+      worksheet.getCell('L' + (i +3)).value = resp[i].revenue
+    }
+  
+  } catch (error) {
+    console.log(error)
+  }
+
+
+
+
+
+
+   //********* End Track Report ************************
 
   //********* Start data dump *********************************
   try {
