@@ -97,12 +97,14 @@ async function wrap(artist) {
   workbook.xlsx.writeFile(artist + '.xlsx')
 }
 
-// let artistsArr = ['Josh Rennie-Hynes','Leftover Salmon','Phil Madeira','Mitchell Tenpenny']
-let artistsArr = ['Dave Hause']
-artistsArr.forEach((artist) => {
-  wrap(artist)
-})
-
+async function run(){
+  // let artistsArr = ['Josh Rennie-Hynes','Leftover Salmon','Phil Madeira','Mitchell Tenpenny']
+  let artistsArr = ['Dave Hause']
+  artistsArr.forEach(async (artist) => {
+    await wrap(artist)
+  })
+}
+run();
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
