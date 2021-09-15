@@ -81,9 +81,8 @@ async function wrap(artist) {
     worksheet.getCell('K2').value = 'PRODUCT'
     worksheet.getCell('L2').value = 'REVENUE'
     for(i = 0; i < resp.length; i++){
-      var str = resp[i].row.split(',')[0]
-      worksheet.getCell('H' + (i +3)).value = str.substring(str.indexOf('"') + 1, str.lastIndexOf('"')
-);
+      var str = resp[i].row
+      worksheet.getCell('H' + (i +3)).value = resp[i].track_name
       worksheet.getCell('J' + (i +3)).value = artist
       worksheet.getCell('L' + (i +3)).value = resp[i].revenue
     }
