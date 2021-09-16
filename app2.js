@@ -3,7 +3,7 @@ const Excel = require('exceljs')
 const app = express()
 const port = 3000
 
-const { ChannelReportQuery, SourceReportQuery, TrackReportQuery, DataDumpQuery } = require('./queries')
+const { ChannelReportQuery, SourceReportQuery, TrackReportQuery, DataDumpQuery, ProductReportQuery } = require('./queries')
 const { worksheetValues, worksheetColumns  } = require('./constants')
 
 app.get('/', (req, res) => {
@@ -72,7 +72,6 @@ async function wrap(artist) {
     let res = await TrackReportQuery(pool, artist)
     let resp = res.rows
     trackSpace = res.rowCount * 2
-    console.log(res)
   
     // HEADERS
     worksheet.getCell('H1').value = 'Track Report'
@@ -99,19 +98,51 @@ async function wrap(artist) {
   } catch (error) {
     console.log(error)
   }
-
-
-/*
-      track_name: 'Top of the World',
-      revenue: 15.092159,
-      product_name: 'Patty',
-      orchard_upc: '195497158522'
-    }
-*/
-
-
-
    //********* End Track Report ************************
+   //********* Start Product Report ************************
+  try {
+    let res = await ProductReportQuery(pool, artist)
+    let resp = res.rows
+    console.log(res)
+    // HEADERS
+    worksheet.getCell('N1').value = 'Product Report'
+    worksheet.getCell('N2').value = 'PRODUCT'
+    worksheet.getCell('O2').value = 'ARTIST'
+    worksheet.getCell('P2').value = 'PROJECT CODE'
+    worksheet.getCell('Q2').value = 'PRODUCT CODE'
+    worksheet.getCell('R2').value = 'REVENUE'
+    for(i = 0; i < resp.length; i++){
+      worksheet.mergeCells('O' + (i + 3 + i) + ':' + 'O' + (i + 4 + i))
+      worksheet.mergeCells('P' + (i + 3 + i) + ':' + 'P' + (i + 4 + i))
+      worksheet.mergeCells('Q' + (i + 3 + i) + ':' + 'Q' + (i + 4 + i))
+      worksheet.mergeCells('R' + (i + 3 + i) + ':' + 'R' + (i + 4 + i))
+
+      worksheet.getCell('N' + (i + 3 + i)).value = resp[i].product_name
+      worksheet.getCell('N' + (i + 4 + i)).value = 'UPC: ' + resp[i].orchard_upc
+
+      worksheet.getCell('O' + (i + 3 + i)).value = artist
+      worksheet.getCell('P' + (i + 3 + i)).value = resp[i].project_code
+      worksheet.getCell('Q' + (i + 3 + i)).value = resp[i].product_code
+      worksheet.getCell('R' + (i + 3 + i)).value = '$' + resp[i].revenue.toFixed(2)
+
+    }
+  
+  } catch (error) {
+    console.log(error)
+  }
+
+
+
+
+
+
+
+
+
+
+
+   //********* End Product Report ************************
+
 
   //********* Start data dump *********************************
   try {
