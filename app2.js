@@ -35,6 +35,7 @@ const pool = new Pool({
 
 let workbook = new Excel.Workbook();
 async function wrap(artist, period) {
+  let mainSpace
   let worksheet = workbook.addWorksheet(createSheetName(period));
 
   //********* Channel Report ****************************
@@ -223,9 +224,10 @@ async function wrap(artist, period) {
   //********* End Product Report ************************
 
   //********* Start data dump *********************************
+  mainSpace = Math.max(channelSpace, sourceSpace, trackSpace, productSpace)
   try {
     let res = await DataDumpQuery(pool, artist, period);
-    worksheet.getRow(trackSpace + 9).values = worksheetValues;
+    worksheet.getRow(mainSpace + 9).values = worksheetValues;
     worksheet.columns = worksheetColumns;
     let data = res.rows;
 
@@ -239,12 +241,12 @@ async function wrap(artist, period) {
     // force the columns to be at least as long as their header row.
     // Have to take this approach because ExcelJS doesn't have an autofit property.
     // worksheet.columns.forEach(column => {
-    //   column.width = worksheet.getRow(trackSpace + 9).values.length
+    //   column.width = worksheet.getRow(mainSpace + 9).values.length
     // })
 
     // Make the header bold.
     // Note: in Excel the rows are 1 based, meaning the first row is 1 instead of 0.
-    worksheet.getRow(trackSpace + 9).font = { bold: true };
+    worksheet.getRow(mainSpace + 9).font = { bold: true };
   } catch (error) {
     console.log(error);
   }
