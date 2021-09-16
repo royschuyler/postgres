@@ -3,7 +3,7 @@ const Excel = require('exceljs')
 const app = express()
 const port = 3000
 
-const { ChannelReportQuery, ChannelReportPhysicalReturnsQuery, ChannelReportTotalQuery, SourceReportQuery, SourceReportTotalQuery, TrackReportQuery, TrackReportTotalQuery, DataDumpQuery, ProductReportQuery } = require('./queries')
+const { ChannelReportQuery, ChannelReportPhysicalReturnsQuery, ChannelReportTotalQuery, SourceReportQuery, SourceReportTotalQuery, TrackReportQuery, TrackReportTotalQuery, ProductReportQuery, ProductReportTotalQuery, DataDumpQuery } = require('./queries')
 const { worksheetValues, worksheetColumns  } = require('./constants')
 
 app.get('/', (req, res) => {
@@ -154,17 +154,13 @@ async function wrap(artist) {
     console.log(error)
   }
 
-
-
-
-
-
-
    //********* End Track Report ************************
    //********* Start Product Report ************************
+   let productSpace
   try {
     let res = await ProductReportQuery(pool, artist)
     let resp = res.rows
+    productSpace = res.rowCount * 2
     //console.log(res)
     // HEADERS
     worksheet.getCell('N1').value = 'Product Report'
@@ -193,8 +189,19 @@ async function wrap(artist) {
     console.log(error)
   }
 
-
-
+  //**********************Product Report Total ***************************
+  try {
+    let res = await ProductReportTotalQuery(pool, artist)
+    let resp = res.rows
+    console.log(resp)
+    console.log(productSpace)
+    // HEADERS
+    worksheet.getCell('N' + (parseInt(productSpace) + 3)).value = 'Total'
+    worksheet.getCell('R' + (parseInt(productSpace) + 3)).value = '$' + resp[0].total.toFixed(2)
+  console.log(resp[0].total.toFixed(2))
+  } catch (error) {
+    console.log(error)
+  }
 
 
 

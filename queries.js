@@ -30,6 +30,10 @@ function ProductReportQuery(pool, artist) {
   return pool.query(`select distinct (product_name, orchard_upc),SUM(label_share_net_receipts) as revenue, product_name, orchard_upc, project_code, product_code from main where period = '2021M3' and artist_name = 'Dave Hause' group by product_name, orchard_upc,project_code, product_code order by revenue desc`)
 }
 
+function ProductReportTotalQuery(pool, artist) {
+  return pool.query(`select SUM(label_share_net_receipts) as total from main where artist_name = '${artist}' and period = '2021M3'`)
+}
+
 function DataDumpQuery(pool, artist) {
   return pool.query(`SELECT * from main where artist_name = '${artist}' and period = '2021M3' order by retailer, orchard_upc, product_name,track_name limit 10`)
 }
@@ -45,5 +49,6 @@ module.exports = {
   TrackReportQuery,
   TrackReportTotalQuery,
   ProductReportQuery,
+  ProductReportTotalQuery,
   DataDumpQuery
 }
