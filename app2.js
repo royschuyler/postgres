@@ -3,7 +3,7 @@ const Excel = require('exceljs')
 const app = express()
 const port = 3000
 
-const { ChannelReportQuery, SourceReportQuery, SourceReportTotalQuery, TrackReportQuery, DataDumpQuery, ProductReportQuery } = require('./queries')
+const { ChannelReportQuery, ChannelReportPhysicalReturnsQuery, SourceReportQuery, SourceReportTotalQuery, TrackReportQuery, TrackReportTotalQuery, DataDumpQuery, ProductReportQuery } = require('./queries')
 const { worksheetValues, worksheetColumns  } = require('./constants')
 
 app.get('/', (req, res) => {
@@ -26,21 +26,35 @@ async function wrap(artist) {
   let worksheet = workbook.addWorksheet('0321 SH')
 
   //********* Channel Report ****************************
+  let channelSpace
   try {
     let res = await ChannelReportQuery(pool, artist)
     let resp = res.rows
-  
+    channelSpace = resp.length
     // HEADERS
     worksheet.getCell('A1').value = 'CHANNEL REPORT'
     worksheet.getCell('A2').value = 'TRANSACTION TYPE'
     worksheet.getCell('B2').value = 'QUANTITY'
     worksheet.getCell('C2').value = 'REVENUE'
     for (i = 0; i < resp.length; i++) {
-      //arr.push(resp[i].retailer)
       worksheet.getCell('A' + (i +3)).value = resp[i].trans_type_description
       worksheet.getCell('B' + (i +3)).value = resp[i].quantity
       worksheet.getCell('C' + (i +3)).value = '$' + resp[i].revenue.toFixed(2)
     }  
+  } catch (error) {
+    console.log(error)
+  }
+
+  //********** Physical Returns ****************************
+    try {
+    let res = await ChannelReportPhysicalReturnsQuery(pool, artist)
+    let resp = res.rows
+    console.log(resp)
+    console.log(channelSpace)
+    // HEADERS
+    worksheet.getCell('A' + (parseInt(channelSpace) + 3)).value = 'Physical Returns'
+    worksheet.getCell('B' + (parseInt(channelSpace) + 3)).value = resp[0].quantity
+    worksheet.getCell('C' + (parseInt(channelSpace) + 3)).value = '($' + resp[0].physical_returns.toFixed(2) + ')'
   } catch (error) {
     console.log(error)
   }
@@ -65,7 +79,7 @@ async function wrap(artist) {
   } catch (error) {
     console.log(error)
   }
-  //Source Total
+  //************ Source Total ****************
   try {
     let res = await SourceReportTotalQuery(pool, artist)
     let resp = res.rows
@@ -112,6 +126,27 @@ async function wrap(artist) {
   } catch (error) {
     console.log(error)
   }
+
+   //****************** Track Total ******************************
+  try {
+    let res = await TrackReportTotalQuery(pool, artist)
+    let resp = res.rows
+    console.log(resp)
+    console.log(trackSpace)
+    // HEADERS
+    worksheet.getCell('H' + (parseInt(trackSpace) + 3)).value = 'Total'
+    worksheet.getCell('L' + (parseInt(trackSpace) + 3)).value = '$' + resp[0].total.toFixed(2)
+  console.log(resp[0].total.toFixed(2))
+  } catch (error) {
+    console.log(error)
+  }
+
+
+
+
+
+
+
    //********* End Track Report ************************
    //********* Start Product Report ************************
   try {
