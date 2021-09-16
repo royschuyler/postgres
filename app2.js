@@ -3,7 +3,7 @@ const Excel = require('exceljs')
 const app = express()
 const port = 3000
 
-const { ChannelReportQuery, SourceReportQuery, TrackReportQuery, DataDumpQuery, ProductReportQuery } = require('./queries')
+const { ChannelReportQuery, SourceReportQuery, SourceReportTotalQuery, TrackReportQuery, DataDumpQuery, ProductReportQuery } = require('./queries')
 const { worksheetValues, worksheetColumns  } = require('./constants')
 
 app.get('/', (req, res) => {
@@ -47,11 +47,11 @@ async function wrap(artist) {
   //********************************** END Channel Report *********************************************
   
   //********* Begin Source Report ************************
-  //let sourceSpace
+  let sourceSpace
   try {
     let res = await SourceReportQuery(pool, artist)
     let resp = res.rows
-    //sourceSpace = resp.length
+    sourceSpace = resp.length
   
     // HEADERS
     worksheet.getCell('E1').value = 'Source Report'
@@ -65,6 +65,20 @@ async function wrap(artist) {
   } catch (error) {
     console.log(error)
   }
+  //Source Total
+  try {
+    let res = await SourceReportTotalQuery(pool, artist)
+    let resp = res.rows
+    console.log(resp)
+    console.log(sourceSpace)
+    // HEADERS
+    worksheet.getCell('E' + (parseInt(sourceSpace) + 3)).value = 'Total'
+    worksheet.getCell('F' + (parseInt(sourceSpace) + 3)).value = '$' + resp[0].total.toFixed(2)
+  console.log(resp[0].total.toFixed(2))
+  } catch (error) {
+    console.log(error)
+  }
+
   //********* End Source Report ************************
   //********* Start Track Report ************************
   let trackSpace
@@ -103,7 +117,7 @@ async function wrap(artist) {
   try {
     let res = await ProductReportQuery(pool, artist)
     let resp = res.rows
-    console.log(res)
+    //console.log(res)
     // HEADERS
     worksheet.getCell('N1').value = 'Product Report'
     worksheet.getCell('N2').value = 'PRODUCT'
@@ -147,7 +161,7 @@ async function wrap(artist) {
   //********* Start data dump *********************************
   try {
     let res = await DataDumpQuery(pool, artist)
-    worksheet.getRow(trackSpace + 7).values = worksheetValues
+    worksheet.getRow(trackSpace + 9).values = worksheetValues
     worksheet.columns = worksheetColumns
     let data = res.rows
 
@@ -162,12 +176,12 @@ async function wrap(artist) {
     // force the columns to be at least as long as their header row.
     // Have to take this approach because ExcelJS doesn't have an autofit property.
     // worksheet.columns.forEach(column => {
-    //   column.width = worksheet.getRow(trackSpace + 7).values.length
+    //   column.width = worksheet.getRow(trackSpace + 9).values.length
     // })
 
     // Make the header bold.
     // Note: in Excel the rows are 1 based, meaning the first row is 1 instead of 0.
-    worksheet.getRow(trackSpace + 7).font = {bold: true}
+    worksheet.getRow(trackSpace + 9).font = {bold: true}
   } catch (error) {
     console.log(error)
   }
