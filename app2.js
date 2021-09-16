@@ -3,7 +3,7 @@ const Excel = require('exceljs')
 const app = express()
 const port = 3000
 
-const { ChannelReportQuery, ChannelReportPhysicalReturnsQuery, SourceReportQuery, SourceReportTotalQuery, TrackReportQuery, TrackReportTotalQuery, DataDumpQuery, ProductReportQuery } = require('./queries')
+const { ChannelReportQuery, ChannelReportPhysicalReturnsQuery, ChannelReportTotalQuery, SourceReportQuery, SourceReportTotalQuery, TrackReportQuery, TrackReportTotalQuery, DataDumpQuery, ProductReportQuery } = require('./queries')
 const { worksheetValues, worksheetColumns  } = require('./constants')
 
 app.get('/', (req, res) => {
@@ -58,6 +58,19 @@ async function wrap(artist) {
   } catch (error) {
     console.log(error)
   }
+  //************* Channel Report Total **************************
+    try {
+    let res = await ChannelReportTotalQuery(pool, artist)
+    let resp = res.rows
+    console.log(resp)
+    console.log(channelSpace)
+    // HEADERS
+    worksheet.getCell('A' + (parseInt(channelSpace) + 4)).value = 'Total'
+    worksheet.getCell('C' + (parseInt(channelSpace) + 4)).value = '$' + resp[0].total.toFixed(2)
+  } catch (error) {
+    console.log(error)
+  }
+
   //********************************** END Channel Report *********************************************
   
   //********* Begin Source Report ************************

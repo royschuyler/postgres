@@ -6,6 +6,10 @@ function ChannelReportPhysicalReturnsQuery(pool, artist) {
   return pool.query(`SELECT SUM(label_share_net_receipts) as physical_returns, quantity from main where trans_type_description = 'Physical Returns' and artist_name = '${artist}' and period = '2021M3' group by quantity`)
 }
 
+function ChannelReportTotalQuery(pool, artist) {
+  return pool.query(`select SUM(label_share_net_receipts) as total from main where artist_name = '${artist}' and period = '2021M3'`)
+}
+
 function SourceReportQuery(pool, artist) {
   return pool.query(`SELECT distinct(retailer), SUM(label_share_net_receipts) as revenue from main where artist_name = '${artist}' and period = '2021M3' and label_share_net_receipts > 0.00000001 group by retailer order by revenue desc`)
 }
@@ -35,6 +39,7 @@ function DataDumpQuery(pool, artist) {
 module.exports = {
   ChannelReportQuery,
   ChannelReportPhysicalReturnsQuery,
+  ChannelReportTotalQuery,
   SourceReportQuery,
   SourceReportTotalQuery,
   TrackReportQuery,
