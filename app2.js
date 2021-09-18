@@ -35,10 +35,15 @@ const pool = new Pool({
 
 let workbook = new Excel.Workbook();
 async function wrap(artist, period) {
+  //************************************************************************
+  //********************************** SH **********************************
+  //************************************************************************
   let mainSpace
-  let worksheet = workbook.addWorksheet(createSheetName(period));
+  let worksheet = workbook.addWorksheet(createSheetName(period) + 'SH');
 
-  //********* Channel Report ****************************
+  //************************************************************************
+  //*****************************Channel Report ****************************
+  //************************************************************************
   let channelSpace;
   try {
     let res = await ChannelReportQuery(pool, artist, period);
@@ -87,10 +92,13 @@ async function wrap(artist, period) {
   } catch (error) {
     console.log(error);
   }
-
+  //***************************************************************************************************
   //********************************** END Channel Report *********************************************
+  //***************************************************************************************************
 
-  //********* Begin Source Report ************************
+  //***************************************************************************************************
+  //********************************** Begin Source Report ********************************************
+  //***************************************************************************************************
   let sourceSpace;
   try {
     let res = await SourceReportQuery(pool, artist, period);
@@ -108,7 +116,7 @@ async function wrap(artist, period) {
   } catch (error) {
     console.log(error);
   }
-  //************ Source Total ****************
+  //************ Source Total **************************
   try {
     let res = await SourceReportTotalQuery(pool, artist, period);
     let resp = res.rows;
@@ -122,9 +130,13 @@ async function wrap(artist, period) {
   } catch (error) {
     console.log(error);
   }
-
-  //********* End Source Report ************************
-  //********* Start Track Report ************************
+  //***************************************************************************************************
+  //******************************** End Source Report ************************************************
+  //***************************************************************************************************
+  
+  //***************************************************************************************************
+  //******************************** Start Track Report ***********************************************
+  //***************************************************************************************************
   let trackSpace;
   try {
     let res = await TrackReportQuery(pool, artist, period);
@@ -171,8 +183,13 @@ async function wrap(artist, period) {
     console.log(error);
   }
 
-  //********* End Track Report ************************
-  //********* Start Product Report ************************
+  //***************************************************************************************************
+  //********************************* End Track Report ************************************************
+  //***************************************************************************************************
+
+  //***************************************************************************************************
+  //********************************* Start Product Report ********************************************
+  //***************************************************************************************************
   let productSpace;
   try {
     let res = await ProductReportQuery(pool, artist, period);
@@ -221,9 +238,13 @@ async function wrap(artist, period) {
     console.log(error);
   }
 
-  //********* End Product Report ************************
+  //***************************************************************************************************
+  //****************************** End Product Report *************************************************
+  //***************************************************************************************************
 
-  //********* Start data dump *********************************
+  //***************************************************************************************************
+  //****************************** Start data dump ****************************************************
+  //***************************************************************************************************
   mainSpace = Math.max(channelSpace, sourceSpace, trackSpace, productSpace)
   try {
     let res = await DataDumpQuery(pool, artist, period);
@@ -250,7 +271,39 @@ async function wrap(artist, period) {
   } catch (error) {
     console.log(error);
   }
-  //************** END data dump *********************************
+  //***************************************************************************************************
+  //********************************* END data dump ***************************************************
+  //***************************************************************************************************
+
+  //***************************************************************************************************
+  //********************************** END SH *********************************************************
+  //***************************************************************************************************
+
+  //***************************************************************************************************
+  //********************************** Begin ST *******************************************************
+  //***************************************************************************************************
+  let worksheet_st = workbook.addWorksheet(createSheetName(period) + 'ST');
+  //HEADERS
+  worksheet_st.getCell("B1").value = "DATE";
+  worksheet_st.getCell("A1").value = artist;
+  worksheet_st.getCell("A2").value = "Digital";
+  worksheet_st.getCell("A3").value = "Physical Sales";
+  worksheet_st.getCell("A5").value = "Non-interactive Radio";
+  worksheet_st.getCell("A6").value = "Physical Returns";
+  worksheet_st.getCell("A8").value = "Net Billings";
+  worksheet_st.getCell("A10").value = "DEDUCTIONS AND FEES";
+  worksheet_st.getCell("A11").value = "Distribution Fee";
+  worksheet_st.getCell("A12").value = "Reserve For Future Returns";
+  worksheet_st.getCell("A13").value = "Returns Handling";
+  worksheet_st.getCell("A14").value = "Digital Sales Dist. Fee";
+  worksheet_st.getCell("A15").value = "Marketing Fees";
+  worksheet_st.getCell("A16").value = "Chargebacks";
+  worksheet_st.getCell("A17").value = "Open Accruals";
+  worksheet_st.getCell("A18").value = "Total Deductions And Fees";
+  worksheet_st.getCell("A21").value = "Net Proceeds Due 120 Days";
+
+
+
 
   workbook.xlsx.writeFile(artist + ".xlsx");
 }
@@ -259,15 +312,15 @@ async function run() {
   // let artistsArr = ['Josh Rennie-Hynes','Leftover Salmon','Phil Madeira','Mitchell Tenpenny']
   let artistsArr = ["Dave Hause"];
   artistsArr.forEach(async (artist, period) => {
-    await wrap(artist, "2021M1");
-    await wrap(artist, "2021M2");
+    // await wrap(artist, "2021M1");
+    // await wrap(artist, "2021M2");
     await wrap(artist, "2021M3");
-    await wrap(artist, "2021M4");
-    await wrap(artist, "2021M5");
-    await wrap(artist, "2021M6");
-    await wrap(artist, "2021M7");
-    await wrap(artist, "2021M8");
-    await wrap(artist, "2021M9");
+    // await wrap(artist, "2021M4");
+    // await wrap(artist, "2021M5");
+    // await wrap(artist, "2021M6");
+    // await wrap(artist, "2021M7");
+    // await wrap(artist, "2021M8");
+    // await wrap(artist, "2021M9");
   });
 }
 run();
