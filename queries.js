@@ -1,3 +1,4 @@
+//*************************** SH sheet queries ******************************************************
 function ChannelReportQuery(pool, artist, period) {
   return pool.query(`SELECT distinct(trans_type_description), SUM(quantity) as quantity, SUM(label_share_net_receipts) as revenue from main where artist_name = '${artist}' and period = '${period}' and quantity > 0 group by trans_type_description order by revenue desc`)
 }
@@ -38,6 +39,10 @@ function DataDumpQuery(pool, artist, period) {
   return pool.query(`SELECT * from main where artist_name = '${artist}' and period = '${period}' order by retailer, orchard_upc, product_name,track_name`)
 }
 
+//*********************************** ST sheet queries *********************************************
+function DigitalTotalQuery(pool, artist, period) {
+  return pool.query(`SELECT SUM(label_share_net_receipts) as digital from main where artist_name = '${artist}' and period = '${period}' and trans_type_description not in ('Physical Sales','Physical Returns')`)
+}
 
 
 module.exports = {
@@ -50,5 +55,6 @@ module.exports = {
   TrackReportTotalQuery,
   ProductReportQuery,
   ProductReportTotalQuery,
-  DataDumpQuery
+  DataDumpQuery,
+  DigitalTotalQuery
 }

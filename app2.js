@@ -13,7 +13,8 @@ const {
   TrackReportTotalQuery,
   ProductReportQuery,
   ProductReportTotalQuery,
-  DataDumpQuery
+  DataDumpQuery,
+  DigitalTotalQuery
 } = require("./queries");
 const { worksheetValues, worksheetColumns } = require("./constants");
 const { createSheetName } = require("./functions");
@@ -302,6 +303,15 @@ async function wrap(artist, period) {
   worksheet_st.getCell("A18").value = "Total Deductions And Fees";
   worksheet_st.getCell("A21").value = "Net Proceeds Due 120 Days";
 
+  // Digital Total
+  try {
+    let res = await DigitalTotalQuery(pool, artist, period);
+    let resp = res.rows;
+    console.log(resp);
+    worksheet_st.getCell("C2").value = "$" + resp[0].digital.toFixed(2);
+  } catch (error) {
+    console.log(error);
+  }
 
 
 
