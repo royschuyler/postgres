@@ -41,11 +41,15 @@ function DataDumpQuery(pool, artist, period) {
 
 //*********************************** ST sheet queries *********************************************
 function DigitalTotalQuery(pool, artist, period) {
-  return pool.query(`SELECT SUM(label_share_net_receipts) as digital from main where artist_name = '${artist}' and period = '${period}' and trans_type_description not in ('Physical Sales','Physical Returns')`)
+  return pool.query(`SELECT SUM(label_share_net_receipts) as digital from main where artist_name = '${artist}' and period = '${period}' and trans_type_description not in ('Physical Sales','Physical Returns','Non-interactive Radio')`)
 }
 
 function PhysicalTotalQuery(pool, artist, period) {
   return pool.query(`SELECT SUM(label_share_net_receipts) as physical from main where artist_name = '${artist}' and period = '${period}' and trans_type_description = 'Physical Sales'`)
+}
+
+function LogTotalQuery(pool, artist, period) {
+  return pool.query(`SELECT SUM(label_share_net_receipts) as total, trans_type_description from main where artist_name = '${artist}' and period = '${period}' and trans_type_description in ('Physical Sales','Physical Returns','Non-interactive Radio') group by trans_type_description`)
 }
 
 module.exports = {
@@ -60,5 +64,7 @@ module.exports = {
   ProductReportTotalQuery,
   DataDumpQuery,
   DigitalTotalQuery,
-  PhysicalTotalQuery
+  PhysicalTotalQuery,
+  LogTotalQuery
 }
+

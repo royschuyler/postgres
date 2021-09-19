@@ -15,7 +15,8 @@ const {
   ProductReportTotalQuery,
   DataDumpQuery,
   DigitalTotalQuery,
-  PhysicalTotalQuery
+  PhysicalTotalQuery,
+  LogTotalQuery
 } = require("./queries");
 const { worksheetValues, worksheetColumns } = require("./constants");
 const { createSheetName } = require("./functions");
@@ -69,8 +70,8 @@ async function wrap(artist, period) {
   try {
     let res = await ChannelReportPhysicalReturnsQuery(pool, artist, period);
     let resp = res.rows;
-    console.log(resp);
-    console.log(channelSpace);
+    //console.log(resp);
+    //console.log(channelSpace);
     // HEADERS
     worksheet.getCell("A" + (parseInt(channelSpace) + 3)).value =
       "Physical Returns";
@@ -85,8 +86,8 @@ async function wrap(artist, period) {
   try {
     let res = await ChannelReportTotalQuery(pool, artist, period);
     let resp = res.rows;
-    console.log(resp);
-    console.log(channelSpace);
+    //console.log(resp);
+    //console.log(channelSpace);
     // HEADERS
     worksheet.getCell("A" + (parseInt(channelSpace) + 4)).value = "Total";
     worksheet.getCell("C" + (parseInt(channelSpace) + 4)).value =
@@ -122,8 +123,8 @@ async function wrap(artist, period) {
   try {
     let res = await SourceReportTotalQuery(pool, artist, period);
     let resp = res.rows;
-    console.log(resp);
-    console.log(sourceSpace);
+    //console.log(resp);
+    //console.log(sourceSpace);
     // HEADERS
     worksheet.getCell("E" + (parseInt(sourceSpace) + 3)).value = "Total";
     worksheet.getCell("F" + (parseInt(sourceSpace) + 3)).value =
@@ -174,8 +175,8 @@ async function wrap(artist, period) {
   try {
     let res = await TrackReportTotalQuery(pool, artist, period);
     let resp = res.rows;
-    console.log(resp);
-    console.log(trackSpace);
+    //console.log(resp);
+    //console.log(trackSpace);
     // HEADERS
     worksheet.getCell("H" + (parseInt(trackSpace) + 3)).value = "Total";
     worksheet.getCell("L" + (parseInt(trackSpace) + 3)).value =
@@ -229,8 +230,8 @@ async function wrap(artist, period) {
   try {
     let res = await ProductReportTotalQuery(pool, artist, period);
     let resp = res.rows;
-    console.log(resp);
-    console.log(productSpace);
+    //console.log(resp);
+    //console.log(productSpace);
     // HEADERS
     worksheet.getCell("N" + (parseInt(productSpace) + 3)).value = "Total";
     worksheet.getCell("R" + (parseInt(productSpace) + 3)).value =
@@ -308,25 +309,50 @@ async function wrap(artist, period) {
   try {
     let res = await DigitalTotalQuery(pool, artist, period);
     let resp = res.rows;
-    console.log(resp);
-    worksheet_st.getCell("C2").value = "$" + resp[0].digital.toFixed(2);
+    //console.log(resp);
+    worksheet_st.getCell("C2").value = resp[0].digital.toFixed(2);
   } catch (error) {
     console.log(error);
   }
 
+/*
   // Physical Total
   try {
     let res = await PhysicalTotalQuery(pool, artist, period);
     let resp = res.rows;
-    console.log(resp);
-    worksheet_st.getCell("C3").value = "$" + resp[0].physical.toFixed(2);
+   //console.log(resp);
+    worksheet_st.getCell("C3").value = "$" + resp[3].physical.toFixed(2);
+  } catch (error) {
+    console.log(error);
+  }
+*/
+
+  // log Total
+  try {
+    let res = await LogTotalQuery(pool, artist, period);
+    let resp = res.rows;
+    //console.log(resp);
+    //From  query resp
+    worksheet_st.getCell("C5").value = resp[0].total.toFixed(2); // Non-interactive Radio
+    worksheet_st.getCell("C6").value = resp[1].total.toFixed(2); // physical returns
+    worksheet_st.getCell("C3").value = resp[2].total.toFixed(2); // physical total
+
+    var netBillings = Number(worksheet_st.getCell("C2").value) + Number(worksheet_st.getCell("C5").value) + 
+    Number(worksheet_st.getCell("C3").value) + Number(worksheet_st.getCell("C6").value)
+
+
+    console.log(netBillings)
+
+    //make excel do the formulas
+    var form = { formula : "(C2+C5)+(C3+C6)", result : netBillings}
+    worksheet_st.getCell("C8").value = { formula : "(C2+C5)+(C3+C6)", result : netBillings}
   } catch (error) {
     console.log(error);
   }
 
 
 
-  workbook.xlsx.writeFile(artist + ".xlsx");
+ workbook.xlsx.writeFile(artist + ".xlsx");
 }
 
 async function run() {
