@@ -14,7 +14,8 @@ const {
   ProductReportQuery,
   ProductReportTotalQuery,
   DataDumpQuery,
-  DigitalTotalQuery
+  DigitalTotalQuery,
+  PhysicalTotalQuery
 } = require("./queries");
 const { worksheetValues, worksheetColumns } = require("./constants");
 const { createSheetName } = require("./functions");
@@ -309,6 +310,16 @@ async function wrap(artist, period) {
     let resp = res.rows;
     console.log(resp);
     worksheet_st.getCell("C2").value = "$" + resp[0].digital.toFixed(2);
+  } catch (error) {
+    console.log(error);
+  }
+
+  // Physical Total
+  try {
+    let res = await PhysicalTotalQuery(pool, artist, period);
+    let resp = res.rows;
+    console.log(resp);
+    worksheet_st.getCell("C3").value = "$" + resp[0].physical.toFixed(2);
   } catch (error) {
     console.log(error);
   }

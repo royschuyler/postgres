@@ -44,6 +44,9 @@ function DigitalTotalQuery(pool, artist, period) {
   return pool.query(`SELECT SUM(label_share_net_receipts) as digital from main where artist_name = '${artist}' and period = '${period}' and trans_type_description not in ('Physical Sales','Physical Returns')`)
 }
 
+function PhysicalTotalQuery(pool, artist, period) {
+  return pool.query(`SELECT SUM(label_share_net_receipts) as physical from main where artist_name = '${artist}' and period = '${period}' and trans_type_description = 'Physical Sales'`)
+}
 
 module.exports = {
   ChannelReportQuery,
@@ -56,5 +59,6 @@ module.exports = {
   ProductReportQuery,
   ProductReportTotalQuery,
   DataDumpQuery,
-  DigitalTotalQuery
+  DigitalTotalQuery,
+  PhysicalTotalQuery
 }
