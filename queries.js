@@ -28,7 +28,7 @@ function TrackReportTotalQuery(pool, artist, period) {
 }
 
 function ProductReportQuery(pool, artist, period) {
-  return pool.query(`select distinct (product_name, orchard_upc),SUM(label_share_net_receipts) as revenue, product_name, orchard_upc, project_code, product_code from main where period = '${period}' and artist_name = 'Dave Hause' group by product_name, orchard_upc,project_code, product_code order by revenue desc`)
+  return pool.query(`select distinct (product_name, orchard_upc),SUM(label_share_net_receipts) as revenue, product_name, orchard_upc, project_code, product_code from main where period = '${period}' and artist_name = '${artist}' group by product_name, orchard_upc,project_code, product_code order by revenue desc`)
 }
 
 function ProductReportTotalQuery(pool, artist, period) {

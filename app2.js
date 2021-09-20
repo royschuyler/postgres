@@ -38,6 +38,7 @@ const pool = new Pool({
 
 let workbook = new Excel.Workbook();
 async function wrap(artist, period) {
+  
   //************************************************************************
   //********************************** SH **********************************
   //************************************************************************
@@ -364,22 +365,24 @@ async function wrap(artist, period) {
   worksheet_st.getCell("C14").value = { formula : "=(C2+C5)*B14", result : digitalSalesFeeTotal}
     
 
- workbook.xlsx.writeFile(artist + ".xlsx");
+ //workbook.xlsx.writeFile(artist + ".xlsx");
 }
 
 async function run() {
   // let artistsArr = ['Josh Rennie-Hynes','Leftover Salmon','Phil Madeira','Mitchell Tenpenny']
   let artistsArr = ["Dave Hause"];
+  //let artistsArr = ["Dave Hause", "Leftover Salmon"]
   artistsArr.forEach(async (artist, period) => {
-    // await wrap(artist, "2021M1");
-    // await wrap(artist, "2021M2");
+    await wrap(artist, "2021M1");
+    await wrap(artist, "2021M2");
     await wrap(artist, "2021M3");
-    // await wrap(artist, "2021M4");
-    // await wrap(artist, "2021M5");
-    // await wrap(artist, "2021M6");
+    await wrap(artist, "2021M4");
+    await wrap(artist, "2021M5");
+    await wrap(artist, "2021M6");
     // await wrap(artist, "2021M7");
     // await wrap(artist, "2021M8");
     // await wrap(artist, "2021M9");
+    workbook.xlsx.writeFile(artist + ".xlsx");
   });
 }
 run();
