@@ -42,7 +42,7 @@ async function wrap(artist, period) {
   //********************************** SH **********************************
   //************************************************************************
   let mainSpace
-  let worksheet = workbook.addWorksheet(createSheetName(period) + 'SH');
+  let worksheet = workbook.addWorksheet(createSheetName(period).sheetName + 'SH');
 
   //************************************************************************
   //*****************************Channel Report ****************************
@@ -285,9 +285,9 @@ async function wrap(artist, period) {
   //***************************************************************************************************
   //********************************** Begin ST *******************************************************
   //***************************************************************************************************
-  let worksheet_st = workbook.addWorksheet(createSheetName(period) + 'ST');
+  let worksheet_st = workbook.addWorksheet(createSheetName(period).sheetName + 'ST');
   //HEADERS
-  worksheet_st.getCell("B1").value = "DATE";
+  worksheet_st.getCell("B1").value = createSheetName(period).date;
   worksheet_st.getCell("A1").value = artist;
   worksheet_st.getCell("A2").value = "Digital";
   worksheet_st.getCell("A3").value = "Physical Sales";
@@ -312,7 +312,7 @@ async function wrap(artist, period) {
     let res = await DigitalTotalQuery(pool, artist, period);
     let resp = res.rows;
     digitalTotal = Number(resp[0].digital.toFixed(2))
-    worksheet_st.getCell("C2").value = resp[0].digital.toFixed(2);
+    worksheet_st.getCell("C2").value = digitalTotal;
   } catch (error) {
     console.log(error);
   }
@@ -331,9 +331,9 @@ async function wrap(artist, period) {
     nonInteractiveRadio = Number(resp[0].total.toFixed(2))
     physicalReturns = Number(resp[1].total.toFixed(2))
 
-    worksheet_st.getCell("C5").value = resp[0].total.toFixed(2); // Non-interactive Radio
-    worksheet_st.getCell("C6").value = resp[1].total.toFixed(2); // physical returns
-    worksheet_st.getCell("C3").value = resp[2].total.toFixed(2); // physical total
+    worksheet_st.getCell("C5").value = nonInteractiveRadio; // Non-interactive Radio
+    worksheet_st.getCell("C6").value = physicalReturns; // physical returns
+    worksheet_st.getCell("C3").value = physicalTotal; // physical total
   } catch (error) {
     console.log(error);
   }
