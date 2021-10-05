@@ -1,5 +1,6 @@
 const Excel = require("exceljs");
-const {wrap} = require('./wrap')
+const {wrap} = require('./wrap');
+const { createSheetName } = require("./functions");
 
 const {
   GetArtistAndPeriodQuery
@@ -35,6 +36,7 @@ async function run(artist_name, periods, workbook) {
   }
 }
 
+//******************* BEGIN PAYOUT *************************************
 async function payout(artist_name, periods, workbook){
   let worksheet_payout = workbook.addWorksheet('PAYOUT');
   worksheet_payout.getCell("A1").value = "BILLINGS";
@@ -65,7 +67,6 @@ async function payout(artist_name, periods, workbook){
   worksheet_payout.getCell("A22").value = "Net Receipts";
   worksheet_payout.getCell("A22").font = { bold: true };
 
-
   worksheet_payout.getCell("A25").value = "Month";
   worksheet_payout.getCell("A25").font = { bold: true };
 
@@ -76,8 +77,15 @@ async function payout(artist_name, periods, workbook){
   worksheet_payout.columns = [
     { header: 'BILLINGS', key: 'BILLINGS', width: 32 },
   ];
-
+  console.log(periods)
+  for(i=0;i<periods.length;i++){
+    var columnLetter = ((i+1) + 9).toString(36).toUpperCase();
+    worksheet_payout.getCell(columnLetter + "1").value = createSheetName(periods[i]).date;
+    worksheet_payout.getCell(columnLetter + "1").font = { bold: true };  
+  }
 }
+//******************* END PAYOUT *************************************
+
 
 async function makeBook({artist_name, periods}){
   if(!artist_name || !periods) return
