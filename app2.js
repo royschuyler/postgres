@@ -21,7 +21,6 @@ const pool = new Pool({
 async function getArtisAndPeriods(){
   try {
     let res = await GetArtistAndPeriodQuery(pool);
-    console.log(res)
     return res.rows;
   } catch (error) {
     console.log(error);
@@ -29,8 +28,10 @@ async function getArtisAndPeriods(){
 }
 
 async function run(artist_name, periods, workbook) {
+  console.log('Begining: ' + artist_name + ' file.')
   for (let period of periods) {
     await wrap(artist_name, period, workbook, pool)
+    console.log('Creating: ' + artist_name + ' ' + period + ' sheets.')
   }
 }
 
@@ -38,6 +39,7 @@ async function makeBook({artist_name, periods}){
   if(!artist_name || !periods) return
   const workbook = new Excel.Workbook();
   await run(artist_name, periods, workbook)
+  console.log('Completed: ' + artist_name + ' file.')
   workbook.xlsx.writeFile(artist_name + ".xlsx");
 }
 

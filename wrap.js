@@ -53,15 +53,24 @@ async function wrap(artist, period, workbook, pool) {
   try {
     let res = await ChannelReportPhysicalReturnsQuery(pool, artist, period);
     let resp = res.rows;
-    //console.log(resp);
-    //console.log(channelSpace);
     // HEADERS
     worksheet.getCell("A" + (parseInt(channelSpace) + 3)).value =
       "Physical Returns";
-    worksheet.getCell("B" + (parseInt(channelSpace) + 3)).value =
+    if(resp[0]){
+      worksheet.getCell("B" + (parseInt(channelSpace) + 3)).value =
       resp[0].quantity;
-    worksheet.getCell("C" + (parseInt(channelSpace) + 3)).value =
+    } else {
+      worksheet.getCell("B" + (parseInt(channelSpace) + 3)).value =
+      0;
+    }
+    if(resp[0]){
+      worksheet.getCell("C" + (parseInt(channelSpace) + 3)).value =
       "($" + resp[0].physical_returns.toFixed(2) + ")";
+    } else {
+      worksheet.getCell("C" + (parseInt(channelSpace) + 3)).value =
+      0.00
+    }
+
   } catch (error) {
     console.log(error);
   }
@@ -69,8 +78,6 @@ async function wrap(artist, period, workbook, pool) {
   try {
     let res = await ChannelReportTotalQuery(pool, artist, period);
     let resp = res.rows;
-    //console.log(resp);
-    //console.log(channelSpace);
     // HEADERS
     worksheet.getCell("A" + (parseInt(channelSpace) + 4)).value = "Total";
     worksheet.getCell("C" + (parseInt(channelSpace) + 4)).value =
@@ -106,8 +113,6 @@ async function wrap(artist, period, workbook, pool) {
   try {
     let res = await SourceReportTotalQuery(pool, artist, period);
     let resp = res.rows;
-    //console.log(resp);
-    //console.log(sourceSpace);
     // HEADERS
     worksheet.getCell("E" + (parseInt(sourceSpace) + 3)).value = "Total";
     worksheet.getCell("F" + (parseInt(sourceSpace) + 3)).value =
@@ -157,8 +162,6 @@ async function wrap(artist, period, workbook, pool) {
   try {
     let res = await TrackReportTotalQuery(pool, artist, period);
     let resp = res.rows;
-    //console.log(resp);
-    //console.log(trackSpace);
     // HEADERS
     worksheet.getCell("H" + (parseInt(trackSpace) + 3)).value = "Total";
     worksheet.getCell("L" + (parseInt(trackSpace) + 3)).value =
@@ -179,7 +182,6 @@ async function wrap(artist, period, workbook, pool) {
     let res = await ProductReportQuery(pool, artist, period);
     let resp = res.rows;
     productSpace = res.rowCount * 2;
-    //console.log(res)
     // HEADERS
     worksheet.getCell("N1").value = "Product Report";
     worksheet.getCell("N2").value = "PRODUCT";
@@ -211,8 +213,6 @@ async function wrap(artist, period, workbook, pool) {
   try {
     let res = await ProductReportTotalQuery(pool, artist, period);
     let resp = res.rows;
-    //console.log(resp);
-    //console.log(productSpace);
     // HEADERS
     worksheet.getCell("N" + (parseInt(productSpace) + 3)).value = "Total";
     worksheet.getCell("R" + (parseInt(productSpace) + 3)).value =
@@ -305,11 +305,23 @@ async function wrap(artist, period, workbook, pool) {
   try {
     let res = await LogTotalQuery(pool, artist, period);
     let resp = res.rows;
-    //console.log(resp);
-    //From query resp
-    physicalTotal = Number(resp[2].total.toFixed(2))
-    nonInteractiveRadio = Number(resp[0].total.toFixed(2))
-    physicalReturns = Number(resp[1].total.toFixed(2))
+
+    if(resp[2]){
+      physicalTotal = Number(resp[2].total.toFixed(2))
+    } else {
+      physicalTotal = 0.00;
+    }
+    if(resp[0]){
+      nonInteractiveRadio = Number(resp[0].total.toFixed(2))
+    } else {
+      nonInteractiveRadio = 0.00
+    }
+    if(resp[1]){
+      physicalReturns = Number(resp[1].total.toFixed(2))
+    } else {
+      physicalReturns = 0.00
+    }
+    
 
     worksheet_st.getCell("C5").value = nonInteractiveRadio; // Non-interactive Radio
     worksheet_st.getCell("C6").value = physicalReturns; // physical returns
@@ -341,8 +353,6 @@ async function wrap(artist, period, workbook, pool) {
   worksheet_st.getCell("C12").value = { formula : "C3*B12", result : reserveForFutureReturnsTotal}
   worksheet_st.getCell("C13").value = { formula : "=C6*B13", result : returnsHandlingTotal}
   worksheet_st.getCell("C14").value = { formula : "=(C2+C5)*B14", result : digitalSalesFeeTotal}
-    
-
 
   //***************************************************************************************************
   //********************************** END ST *********************************************************
@@ -357,8 +367,6 @@ async function wrap(artist, period, workbook, pool) {
   let cb_length
   try {
     let res = await ChargeBackDataQuery(pool, artist, period);
-    //worksheet_cb.getRow(1).values = worksheetValues;
-   // worksheet_cb.columns = worksheetColumns;
     let data = res.rows;
     cb_length = data.length;
 
@@ -369,16 +377,16 @@ async function wrap(artist, period, workbook, pool) {
     worksheet_cb.getCell("D1").value = "UPC";
     worksheet_cb.getCell("E1").value = "TOTAL";
 
-
-
-
     for(i=0;i<data.length;i++){
       worksheet_cb.getCell("A" + (i + 2)).value = data[i].expense;
       worksheet_cb.getCell("B" + (i + 2)).value = data[i].expense_type;
       worksheet_cb.getCell("C" + (i + 2)).value = data[i].release;
       worksheet_cb.getCell("D" + (i + 2)).value = data[i].upc;
-      worksheet_cb.getCell("E" + (i + 2)).value = Number(data[i].total.toFixed(2));
-      worksheet_cb.getCell("E" + (i + 2)).value = Number(data[i].total.toFixed(2));
+      if(data[i]){
+        worksheet_cb.getCell("E" + (i + 2)).value = Number(data[i].total.toFixed(2));
+      } else {
+        worksheet_cb.getCell("E" + (i + 2)).value = 0.00;
+      }
       worksheet_cb.getCell("E" + (i + 2)).font = {
         color: {argb: 'ffff0000'},
         bold: true
@@ -393,9 +401,14 @@ async function wrap(artist, period, workbook, pool) {
   try {
     let res = await ChargeBackTotalQuery(pool, artist, period);
     let resp = res.rows;
-    console.log(resp)
+    //console.log(resp)
     worksheet_cb.getCell("A" + (cb_length + 3)).value = "Total";
-    worksheet_cb.getCell("B" + (cb_length + 3)).value = Number(resp[0].sum.toFixed(2));
+    if(resp[0].sum){
+          worksheet_cb.getCell("B" + (cb_length + 3)).value = Number(resp[0].sum.toFixed(2));
+        } else {
+          worksheet_cb.getCell("B" + (cb_length + 3)).value = 0.00;
+        }
+
     worksheet_cb.getCell("B" + (cb_length + 3)).font = {
         color: {argb: 'ffff0000'},
         bold: true
