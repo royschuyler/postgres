@@ -35,10 +35,15 @@ async function run(artist_name, periods, workbook) {
   }
 }
 
+async function payout(artist_name, periods, workbook){
+  workbook.addWorksheet('PAYOUT')
+}
+
 async function makeBook({artist_name, periods}){
   if(!artist_name || !periods) return
   const workbook = new Excel.Workbook();
-  await run(artist_name, periods, workbook)
+  await run(artist_name, periods, workbook);
+  payout(artist_name, periods, workbook);
   console.log('Completed: ' + artist_name + ' file.')
   workbook.xlsx.writeFile(artist_name + ".xlsx");
 }

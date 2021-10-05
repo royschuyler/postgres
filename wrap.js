@@ -430,10 +430,6 @@ async function wrap(artist, period, workbook, pool) {
   var perfRights = 0.00;
   worksheet_st.getCell("C19").value = perfRights;
   var netProceeds = Number(Number(netBillings)-Number(stTotal)+Number(perfRights));
-  // console.log(netBillings)
-  // console.log(stTotal)
-  // console.log(perfRights)
-  // console.log(netProceeds)
   worksheet_st.getCell("C21").value = { formula : "=C8-C18+C19", result : netProceeds}
 
   //***************************************************************************************************
