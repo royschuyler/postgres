@@ -263,6 +263,73 @@ async function wrap(artist, period, workbook, pool) {
   //***************************************************************************************************
 
   //***************************************************************************************************
+  //********************************** BEGIN CB *******************************************************
+  //***************************************************************************************************
+
+  let worksheet_cb = workbook.addWorksheet(createSheetName(period).sheetName + 'CB');
+  //************************* CB DATA DUMP **********************************************************
+  let cb_length
+  try {
+    let res = await ChargeBackDataQuery(pool, artist, period);
+    let data = res.rows;
+    cb_length = data.length;
+
+    //CB HEADERS
+    worksheet_cb.getCell("A1").value = "EXPENSE";
+    worksheet_cb.getCell("B1").value = "EXPENSE TYPE";
+    worksheet_cb.getCell("C1").value = "PRODUCT";
+    worksheet_cb.getCell("D1").value = "UPC";
+    worksheet_cb.getCell("E1").value = "TOTAL";
+
+    for(i=0;i<data.length;i++){
+      worksheet_cb.getCell("A" + (i + 2)).value = data[i].expense;
+      worksheet_cb.getCell("B" + (i + 2)).value = data[i].expense_type;
+      worksheet_cb.getCell("C" + (i + 2)).value = data[i].release;
+      worksheet_cb.getCell("D" + (i + 2)).value = data[i].upc;
+      if(data[i]){
+        worksheet_cb.getCell("E" + (i + 2)).value = Number(data[i].total.toFixed(2));
+      } else {
+        worksheet_cb.getCell("E" + (i + 2)).value = 0.00;
+      }
+      worksheet_cb.getCell("E" + (i + 2)).font = {
+        color: {argb: 'ffff0000'},
+        bold: true
+      };
+    }
+
+  } catch (error) {
+    console.log(error);
+  }
+
+  //******************************* CB TOTAL ***************************************************
+  let cbTotal
+  try {
+    let res = await ChargeBackTotalQuery(pool, artist, period);
+    let resp = res.rows;
+    //console.log(resp)
+    worksheet_cb.getCell("A" + (cb_length + 3)).value = "Total";
+    if(resp[0].sum){
+          worksheet_cb.getCell("B" + (cb_length + 3)).value = Number(resp[0].sum.toFixed(2));
+          cbTotal = Number(resp[0].sum.toFixed(2))
+        } else {
+          worksheet_cb.getCell("B" + (cb_length + 3)).value = 0.00;
+          cbTotal = 0.00
+        }
+
+    worksheet_cb.getCell("B" + (cb_length + 3)).font = {
+        color: {argb: 'ffff0000'},
+        bold: true
+      };
+  } catch (error) {
+    console.log(error);
+  }
+
+  //***************************************************************************************************
+  //********************************** END CB *********************************************************
+  //***************************************************************************************************
+
+
+  //***************************************************************************************************
   //********************************** Begin ST *******************************************************
   //***************************************************************************************************
   let worksheet_st = workbook.addWorksheet(createSheetName(period).sheetName + 'ST');
@@ -354,73 +421,11 @@ async function wrap(artist, period, workbook, pool) {
   worksheet_st.getCell("C13").value = { formula : "=C6*B13", result : returnsHandlingTotal}
   worksheet_st.getCell("C14").value = { formula : "=(C2+C5)*B14", result : digitalSalesFeeTotal}
 
+  worksheet_st.getCell("C16").value = cbTotal * -1
+
   //***************************************************************************************************
   //********************************** END ST *********************************************************
   //***************************************************************************************************
-
-  //***************************************************************************************************
-  //********************************** BEGIN CB *******************************************************
-  //***************************************************************************************************
-
-  let worksheet_cb = workbook.addWorksheet(createSheetName(period).sheetName + 'CB');
-  //************************* CB DATA DUMP **********************************************************
-  let cb_length
-  try {
-    let res = await ChargeBackDataQuery(pool, artist, period);
-    let data = res.rows;
-    cb_length = data.length;
-
-    //CB HEADERS
-    worksheet_cb.getCell("A1").value = "EXPENSE";
-    worksheet_cb.getCell("B1").value = "EXPENSE TYPE";
-    worksheet_cb.getCell("C1").value = "PRODUCT";
-    worksheet_cb.getCell("D1").value = "UPC";
-    worksheet_cb.getCell("E1").value = "TOTAL";
-
-    for(i=0;i<data.length;i++){
-      worksheet_cb.getCell("A" + (i + 2)).value = data[i].expense;
-      worksheet_cb.getCell("B" + (i + 2)).value = data[i].expense_type;
-      worksheet_cb.getCell("C" + (i + 2)).value = data[i].release;
-      worksheet_cb.getCell("D" + (i + 2)).value = data[i].upc;
-      if(data[i]){
-        worksheet_cb.getCell("E" + (i + 2)).value = Number(data[i].total.toFixed(2));
-      } else {
-        worksheet_cb.getCell("E" + (i + 2)).value = 0.00;
-      }
-      worksheet_cb.getCell("E" + (i + 2)).font = {
-        color: {argb: 'ffff0000'},
-        bold: true
-      };
-    }
-
-  } catch (error) {
-    console.log(error);
-  }
-
-  //******************************* CB TOTAL ***************************************************
-  try {
-    let res = await ChargeBackTotalQuery(pool, artist, period);
-    let resp = res.rows;
-    //console.log(resp)
-    worksheet_cb.getCell("A" + (cb_length + 3)).value = "Total";
-    if(resp[0].sum){
-          worksheet_cb.getCell("B" + (cb_length + 3)).value = Number(resp[0].sum.toFixed(2));
-        } else {
-          worksheet_cb.getCell("B" + (cb_length + 3)).value = 0.00;
-        }
-
-    worksheet_cb.getCell("B" + (cb_length + 3)).font = {
-        color: {argb: 'ffff0000'},
-        bold: true
-      };
-  } catch (error) {
-    console.log(error);
-  }
-
-  //***************************************************************************************************
-  //********************************** END CB *********************************************************
-  //***************************************************************************************************
-
 }
 
 module.exports = { wrap }
