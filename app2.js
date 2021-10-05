@@ -69,6 +69,10 @@ async function payout(artist_name, periods, workbook){
   worksheet_payout.getCell("A25").value = "Month";
   worksheet_payout.getCell("A25").font = { bold: true };
 
+  worksheet_payout.views = [
+  {state: 'frozen', xSplit: 1, ySplit: 0}
+];
+
 }
 
 async function makeBook({artist_name, periods}){
