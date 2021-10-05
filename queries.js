@@ -64,7 +64,7 @@ function ChargeBackTotalQuery(pool, artist, period) {
 
 //********************************** Get Artist and Period Queries ********************************
 function GetArtistAndPeriodQuery(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period)) as period from main group by artist_name limit 1`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period)) as periods from main group by artist_name limit 5`)
 }
 
 
