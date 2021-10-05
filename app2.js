@@ -36,7 +36,39 @@ async function run(artist_name, periods, workbook) {
 }
 
 async function payout(artist_name, periods, workbook){
-  workbook.addWorksheet('PAYOUT')
+  let worksheet_payout = workbook.addWorksheet('PAYOUT');
+  worksheet_payout.getCell("A1").value = "BILLINGS";
+  worksheet_payout.getCell("A1").font = { bold: true };
+  worksheet_payout.getCell("A2").value = "Gross Physical Billings";
+  worksheet_payout.getCell("A3").value = "Physical Product Returns";
+  worksheet_payout.getCell("A4").value = "Net Physical Billings";
+
+  worksheet_payout.getCell("A6").value = "DIGITAL SALES";
+  worksheet_payout.getCell("A6").font = { bold: true };
+  worksheet_payout.getCell("A7").value = "Non-interactive";
+  worksheet_payout.getCell("A8").value = "Total Digital Revenue";
+  worksheet_payout.getCell("A8").font = { bold: true };
+
+  worksheet_payout.getCell("A10").value = "DEDUCTIONS AND FEES";
+  worksheet_payout.getCell("A11").value = "Distribution Fee";
+  worksheet_payout.getCell("A12").value = "Reserve For Future Returns";
+  worksheet_payout.getCell("A13").value = "Returns Handling";
+  worksheet_payout.getCell("A14").value = "Digital Sales Dist. Fee";
+  worksheet_payout.getCell("A15").value = "Marketing Fees";
+  worksheet_payout.getCell("A16").value = "Chargebacks";
+  worksheet_payout.getCell("A17").value = "Open Accruals";
+
+  worksheet_payout.getCell("A19").value = "Total Deductions And Fees";
+  worksheet_payout.getCell("A19").font = { bold: true };
+
+  worksheet_payout.getCell("A21").value = "Performance Rights";
+  worksheet_payout.getCell("A22").value = "Net Receipts";
+  worksheet_payout.getCell("A22").font = { bold: true };
+
+
+  worksheet_payout.getCell("A25").value = "Month";
+  worksheet_payout.getCell("A25").font = { bold: true };
+
 }
 
 async function makeBook({artist_name, periods}){
