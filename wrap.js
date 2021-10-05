@@ -350,6 +350,7 @@ async function wrap(artist, period, workbook, pool) {
   worksheet_st.getCell("A16").value = "Chargebacks";
   worksheet_st.getCell("A17").value = "Open Accruals";
   worksheet_st.getCell("A18").value = "Total Deductions And Fees";
+  worksheet_st.getCell("A19").value = "Perf Rights";
   worksheet_st.getCell("A21").value = "Net Proceeds Due 120 Days";
 
 
@@ -420,8 +421,20 @@ async function wrap(artist, period, workbook, pool) {
   worksheet_st.getCell("C12").value = { formula : "C3*B12", result : reserveForFutureReturnsTotal}
   worksheet_st.getCell("C13").value = { formula : "=C6*B13", result : returnsHandlingTotal}
   worksheet_st.getCell("C14").value = { formula : "=(C2+C5)*B14", result : digitalSalesFeeTotal}
-
-  worksheet_st.getCell("C16").value = cbTotal * -1
+  worksheet_st.getCell("C15").value = 0.00;
+  worksheet_st.getCell("C16").value = cbTotal * -1;
+  worksheet_st.getCell("C17").value = 0.00;
+  var stTotal = Number(distributionFeeTotal)+Number(reserveForFutureReturnsTotal)+Number(returnsHandlingTotal)+
+  Number(digitalSalesFeeTotal)+Number((cbTotal * -1));
+  worksheet_st.getCell("C18").value = { formula : "=SUM(C11:C17)", result : stTotal}
+  var perfRights = 0.00;
+  worksheet_st.getCell("C19").value = perfRights;
+  var netProceeds = Number(Number(netBillings)-Number(stTotal)+Number(perfRights));
+  // console.log(netBillings)
+  // console.log(stTotal)
+  // console.log(perfRights)
+  // console.log(netProceeds)
+  worksheet_st.getCell("C21").value = { formula : "=C8-C18+C19", result : netProceeds}
 
   //***************************************************************************************************
   //********************************** END ST *********************************************************
