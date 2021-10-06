@@ -122,6 +122,14 @@ async function payout(artist_name, periods, workbook){
     worksheet_payout.getCell(columnLetter + "7").value = { formula : "='" + createSheetName(periods[i]).sheetName + " ST'!C5", result : undefined}
     worksheet_payout.getCell(columnLetter + "8").value = { formula : "=SUM(R6:R7)", result : undefined}
 
+    worksheet_payout.getCell(columnLetter + "11").value = { formula : "='" + createSheetName(periods[i]).sheetName + " ST'!C11", result : undefined}
+    worksheet_payout.getCell(columnLetter + "12").value = { formula : "='" + createSheetName(periods[i]).sheetName + " ST'!C12", result : undefined}
+    worksheet_payout.getCell(columnLetter + "13").value = { formula : "='" + createSheetName(periods[i]).sheetName + " ST'!C13", result : undefined}
+    worksheet_payout.getCell(columnLetter + "14").value = { formula : "='" + createSheetName(periods[i]).sheetName + " ST'!C14", result : undefined}
+    worksheet_payout.getCell(columnLetter + "15").value = { formula : "='" + createSheetName(periods[i]).sheetName + " ST'!C15", result : undefined}
+    worksheet_payout.getCell(columnLetter + "16").value = { formula : "='" + createSheetName(periods[i]).sheetName + " ST'!C16", result : undefined}
+    worksheet_payout.getCell(columnLetter + "17").value = { formula : "='" + createSheetName(periods[i]).sheetName + " ST'!C17", result : undefined}
+
   //   //cb begin
   //   let cb_length
   //   try {
