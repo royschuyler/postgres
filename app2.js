@@ -132,7 +132,6 @@ async function payout(artist_name, periods, workbook){
     worksheet_payout.getCell(columnLetter + "22").value = { formula : "=(" + columnLetter + "4+" + columnLetter + "8+" + columnLetter + "21)-" + columnLetter + "19", result : undefined}
 
     worksheet_payout.getRow("25").height = 75;
-    worksheet_payout.getRow("25").width = 75;
 
     worksheet_payout.columns = [  
       { width: 25 }, { width: 15 }, { width: 15 }, { width: 15 }, { width: 15 }, { width: 15 }
@@ -144,128 +143,9 @@ async function payout(artist_name, periods, workbook){
     worksheet_payout.getCell('E25').alignment = { wrapText: true };
     worksheet_payout.getCell('F25').alignment = { wrapText: true };
 
-  //   //cb begin
-  //   let cb_length
-  //   try {
-  //     let res = await ChargeBackDataQuery(pool, artist_name, periods[i]);
-  //     let data = res.rows;
-  //     cb_length = data.length;
-  //     //console.log(data)
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-
-  //   //******************************* CB TOTAL ***************************************************
-  //   let cbTotal
-  //   try {
-  //     let res = await ChargeBackTotalQuery(pool, artist_name, periods[i]);
-  //     let resp = res.rows;
-  //     //console.log(resp)
-  //     if(resp[0].sum){
-  //           //worksheet_cb.getCell("B" + (cb_length + 3)).value = Number(resp[0].sum.toFixed(2));
-  //           cbTotal = Number(resp[0].sum.toFixed(2))
-  //         } else {
-  //           //worksheet_cb.getCell("B" + (cb_length + 3)).value = 0.00;
-  //           cbTotal = 0.00
-  //         }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  //   //cb end
-
-  //   //st begin
-  //   // Digital Total
-  //   let digitalTotal
-  //   try {
-  //     let res = await DigitalTotalQuery(pool, artist_name, periods[i]);
-  //     let resp = res.rows;
-  //     digitalTotal = Number(resp[0].digital.toFixed(2))
-  //     //worksheet_st.getCell("C2").value = digitalTotal;
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-
-  //   // log Total
-  //   let physicalTotal
-  //   let nonInteractiveRadio
-  //   let physicalReturns
-
-  //   try {
-  //     let res = await LogTotalQuery(pool, artist_name, periods[i]);
-  //     let resp = res.rows;
-
-  //     if(resp[2]){
-  //       physicalTotal = Number(resp[2].total.toFixed(2))
-  //     } else {
-  //       physicalTotal = 0.00;
-  //     }
-  //     if(resp[0]){
-  //       nonInteractiveRadio = Number(resp[0].total.toFixed(2))
-  //     } else {
-  //       nonInteractiveRadio = 0.00
-  //     }
-  //     if(resp[1]){
-  //       physicalReturns = Number(resp[1].total.toFixed(2))
-  //     } else {
-  //       physicalReturns = 0.00
-  //     }
-      
-
-  //     // worksheet_st.getCell("C5").value = nonInteractiveRadio; // Non-interactive Radio
-  //     // worksheet_st.getCell("C6").value = physicalReturns; // physical returns
-  //     // worksheet_st.getCell("C3").value = physicalTotal; // physical total
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-
-  // //****************** st report non-query tabulations *****************************
-  //   const distributionFee = .28;
-  //   const reserveForFutureReturns = .25;
-  //   const returnsHandling = .02;
-  //   const digitalSalesFee = .26;
-
-  //   // worksheet_st.getCell("B11").value = distributionFee;
-  //   // worksheet_st.getCell("B12").value = reserveForFutureReturns;
-  //   // worksheet_st.getCell("B13").value = returnsHandling;
-  //   // worksheet_st.getCell("B14").value = digitalSalesFee;
-
-  //   var netBillings = parseFloat(digitalTotal + nonInteractiveRadio + physicalTotal + physicalReturns).toFixed(2)
-  //   var distributionFeeTotal = parseFloat((physicalTotal + physicalReturns) * distributionFee).toFixed(2)
-  //   var reserveForFutureReturnsTotal = parseFloat(physicalTotal * reserveForFutureReturns).toFixed(2)
-  //   var returnsHandlingTotal = parseFloat(physicalTotal * returnsHandling).toFixed(2)
-  //   var digitalSalesFeeTotal = parseFloat((digitalTotal + nonInteractiveRadio) * digitalSalesFee).toFixed(2)
-
-  //   //make excel do the formulas
-  //   // worksheet_st.getCell("C8").value =  { formula : "(C2+C5)+(C3+C6)", result : distributionFeeTotal}
-  //   // worksheet_st.getCell("C11").value = { formula : "(C3-C6)*B11", result : netBillings}
-  //   // worksheet_st.getCell("C12").value = { formula : "C3*B12", result : reserveForFutureReturnsTotal}
-  //   // worksheet_st.getCell("C13").value = { formula : "=C6*B13", result : returnsHandlingTotal}
-  //   // worksheet_st.getCell("C14").value = { formula : "=(C2+C5)*B14", result : digitalSalesFeeTotal}
-  //   // worksheet_st.getCell("C15").value = 0.00;
-  //   // worksheet_st.getCell("C16").value = cbTotal * -1;
-  //   // worksheet_st.getCell("C17").value = 0.00;
-  //   var stTotal = Number(distributionFeeTotal)+Number(reserveForFutureReturnsTotal)+Number(returnsHandlingTotal)+
-  //   Number(digitalSalesFeeTotal)+Number((cbTotal * -1));
-  //   //worksheet_st.getCell("C18").value = { formula : "=SUM(C11:C17)", result : stTotal}
-  //   var perfRights = 0.00;
-  //   //worksheet_st.getCell("C19").value = perfRights;
-  //   var netProceeds = Number(Number(netBillings)-Number(stTotal)+Number(perfRights));
-    //worksheet_st.getCell("C21").value = { formula : "=C8-C18+C19", result : netProceeds}
-    //stend
-
-    //BEGIN PAYOUT FROM QUERIES AND LOOP
-    //dynamic headers
-    // var columnLetter = ((i+1) + 9).toString(36).toUpperCase();
-    // console.log(columnLetter)
-    // console.log(periods[i])
-    // console.log(createSheetName(periods[i]).date)
-    // worksheet_payout.getCell(columnLetter + "1").value = createSheetName(periods[i]).date;
-    // worksheet_payout.getCell(columnLetter + "1").font = { bold: true }; 
-
-    //worksheet_payout.getCell(columnLetter + i + 2).value = physicalTotal;
-
-
-
+    var startingColumn = 27;
+    worksheet_payout.getCell("A" + (startingColumn + i)).value = createSheetName(periods[i]).date;
+    worksheet_payout.getCell("A" + (startingColumn + i)).font = { bold: true }; 
 
 
 
