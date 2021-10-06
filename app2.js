@@ -108,15 +108,15 @@ async function payout(artist_name, periods, workbook){
 
   for(i=0;i<periods.length;i++){
     var columnLetter = ((i+2) + 9).toString(36).toUpperCase();
-    console.log(columnLetter)
-    console.log(periods[i])
-    console.log(createSheetName(periods[i]).date)
+    //console.log(columnLetter)
+    //console.log(periods[i])
+    //console.log(createSheetName(periods[i]).date)
     worksheet_payout.getCell(columnLetter + "1").value = createSheetName(periods[i]).date;
     worksheet_payout.getCell(columnLetter + "1").font = { bold: true }; 
 
     worksheet_payout.getCell(columnLetter + "2").value = { formula : "='" + createSheetName(periods[i]).sheetName + " ST'!C3", result : undefined}
     worksheet_payout.getCell(columnLetter + "3").value = { formula : "='" + createSheetName(periods[i]).sheetName + " ST'!C6", result : undefined}
-    worksheet_payout.getCell(columnLetter + "4").value = { formula : "=R2-R3", result : undefined}
+    worksheet_payout.getCell(columnLetter + "4").value = { formula : "=" + columnLetter +"2-" + columnLetter + "3", result : undefined}
 
     worksheet_payout.getCell(columnLetter + "6").value = { formula : "='" + createSheetName(periods[i]).sheetName + " ST'!C2", result : undefined}
     worksheet_payout.getCell(columnLetter + "7").value = { formula : "='" + createSheetName(periods[i]).sheetName + " ST'!C5", result : undefined}
@@ -129,6 +129,9 @@ async function payout(artist_name, periods, workbook){
     worksheet_payout.getCell(columnLetter + "15").value = { formula : "='" + createSheetName(periods[i]).sheetName + " ST'!C15", result : undefined}
     worksheet_payout.getCell(columnLetter + "16").value = { formula : "='" + createSheetName(periods[i]).sheetName + " ST'!C16", result : undefined}
     worksheet_payout.getCell(columnLetter + "17").value = { formula : "='" + createSheetName(periods[i]).sheetName + " ST'!C17", result : undefined}
+
+    worksheet_payout.getCell(columnLetter + "19").value = { formula : "=SUM(" + columnLetter + "11:" + columnLetter + "18)", result : undefined}
+    worksheet_payout.getCell(columnLetter + "22").value = { formula : "=(" + columnLetter + "4+" + columnLetter + "8+" + columnLetter + "21)-" + columnLetter + "19", result : undefined}
 
   //   //cb begin
   //   let cb_length
