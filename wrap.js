@@ -25,7 +25,7 @@ async function wrap(artist, period, workbook, pool) {
   //********************************** SH **********************************
   //************************************************************************
   let mainSpace
-  let worksheet = workbook.addWorksheet(createSheetName(period).sheetName + 'SH');
+  let worksheet = workbook.addWorksheet(createSheetName(period).sheetName + ' SH');
 
   //************************************************************************
   //*****************************Channel Report ****************************
@@ -266,7 +266,7 @@ async function wrap(artist, period, workbook, pool) {
   //********************************** BEGIN CB *******************************************************
   //***************************************************************************************************
 
-  let worksheet_cb = workbook.addWorksheet(createSheetName(period).sheetName + 'CB');
+  let worksheet_cb = workbook.addWorksheet(createSheetName(period).sheetName + ' CB');
   //************************* CB DATA DUMP **********************************************************
   let cb_length
   try {
@@ -332,7 +332,7 @@ async function wrap(artist, period, workbook, pool) {
   //***************************************************************************************************
   //********************************** Begin ST *******************************************************
   //***************************************************************************************************
-  let worksheet_st = workbook.addWorksheet(createSheetName(period).sheetName + 'ST');
+  let worksheet_st = workbook.addWorksheet(createSheetName(period).sheetName + ' ST');
   //HEADERS
   worksheet_st.getCell("B1").value = createSheetName(period).date;
   worksheet_st.getCell("A1").value = artist;
@@ -436,5 +436,7 @@ async function wrap(artist, period, workbook, pool) {
   //********************************** END ST *********************************************************
   //***************************************************************************************************
 }
+
+
 
 module.exports = { wrap }
