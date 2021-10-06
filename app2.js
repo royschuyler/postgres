@@ -145,8 +145,10 @@ async function payout(artist_name, periods, workbook){
 
     var startingColumn = 27;
     worksheet_payout.getCell("A" + (startingColumn + i)).value = createSheetName(periods[i]).date;
-    worksheet_payout.getCell("A" + (startingColumn + i)).font = { bold: true }; 
-
+    worksheet_payout.getCell("B" + (startingColumn + i)).value =  { formula : "=" + columnLetter + "22", result : undefined}
+    worksheet_payout.getCell("C" + (startingColumn + i)).value =  { formula : "=" + columnLetter + "12", result : undefined}
+    //worksheet_payout.getCell("D" + (startingColumn + i)).value =  { formula : "=" + columnLetter + "22", result : undefined}
+    //worksheet_payout.getCell("E" + (startingColumn + i)).value =  { formula : "=" + columnLetter + "22", result : undefined}
 
 
 
