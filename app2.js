@@ -108,9 +108,7 @@ async function payout(artist_name, periods, workbook){
 
   for(i=0;i<periods.length;i++){
     var columnLetter = ((i+2) + 9).toString(36).toUpperCase();
-    //console.log(columnLetter)
-    //console.log(periods[i])
-    //console.log(createSheetName(periods[i]).date)
+
     worksheet_payout.getCell(columnLetter + "1").value = createSheetName(periods[i]).date;
     worksheet_payout.getCell(columnLetter + "1").font = { bold: true }; 
 
@@ -132,6 +130,19 @@ async function payout(artist_name, periods, workbook){
 
     worksheet_payout.getCell(columnLetter + "19").value = { formula : "=SUM(" + columnLetter + "11:" + columnLetter + "18)", result : undefined}
     worksheet_payout.getCell(columnLetter + "22").value = { formula : "=(" + columnLetter + "4+" + columnLetter + "8+" + columnLetter + "21)-" + columnLetter + "19", result : undefined}
+
+    worksheet_payout.getRow("25").height = 75;
+    worksheet_payout.getRow("25").width = 75;
+
+    worksheet_payout.columns = [  
+      { width: 25 }, { width: 15 }, { width: 15 }, { width: 15 }, { width: 15 }, { width: 15 }
+    ]; 
+
+    worksheet_payout.getCell('B25').alignment = { wrapText: true };
+    worksheet_payout.getCell('C25').alignment = { wrapText: true };
+    worksheet_payout.getCell('D25').alignment = { wrapText: true };
+    worksheet_payout.getCell('E25').alignment = { wrapText: true };
+    worksheet_payout.getCell('F25').alignment = { wrapText: true };
 
   //   //cb begin
   //   let cb_length
