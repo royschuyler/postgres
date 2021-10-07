@@ -144,13 +144,14 @@ async function payout(artist_name, periods, workbook){
     worksheet_payout.getCell('F25').alignment = { wrapText: true };
 
     var startingColumn = 27;
+    var reserveColumn = startingColumn + 12;
     worksheet_payout.getCell("A" + (startingColumn + i)).value = createSheetName(periods[i]).date;
     worksheet_payout.getCell("B" + (startingColumn + i)).value =  { formula : "=" + columnLetter + "22", result : undefined}
     worksheet_payout.getCell("C" + (startingColumn + i)).value =  { formula : "=" + columnLetter + "12", result : undefined}
-    //worksheet_payout.getCell("D" + (startingColumn + i)).value =  { formula : "=" + columnLetter + "22", result : undefined}
+    worksheet_payout.getCell("D" + (reserveColumn + i)).value =  { formula : "=C" + (startingColumn + i), result : undefined}
     //worksheet_payout.getCell("E" + (startingColumn + i)).value =  { formula : "=" + columnLetter + "22", result : undefined}
-
-
+    //worksheet_payout.getCell("E" + (startingColumn + i)).value =  { formula : "=B" + (startingColumn + i) + "+" + "C" + (startingColumn + i), result : undefined}
+    worksheet_payout.getCell("E" + (startingColumn + i)).value =  { formula : "=B" + (startingColumn + i) + "+" + "C" + (startingColumn + i) + "+" + "E" + (startingColumn + (i - 1)), result : undefined}
 
   } //end loop
 } //end payout function
