@@ -1,6 +1,7 @@
 const Excel = require("exceljs");
 const {wrap} = require('./wrap');
-const { createSheetName } = require("./functions");
+const { getLastDate } = require("./functions");
+const { logicSheetName } = require("./functions");
 
 const {
   ChannelReportQuery,
@@ -109,24 +110,24 @@ async function payout(artist_name, periods, workbook){
   for(i=0;i<periods.length;i++){
     var columnLetter = ((i+2) + 9).toString(36).toUpperCase();
 
-    worksheet_payout.getCell(columnLetter + "1").value = createSheetName(periods[i]).date;
+    worksheet_payout.getCell(columnLetter + "1").value = logicSheetName(periods[i]).date;
     worksheet_payout.getCell(columnLetter + "1").font = { bold: true }; 
 
-    worksheet_payout.getCell(columnLetter + "2").value = { formula : "='" + createSheetName(periods[i]).sheetName + " ST'!C3", result : undefined}
-    worksheet_payout.getCell(columnLetter + "3").value = { formula : "='" + createSheetName(periods[i]).sheetName + " ST'!C6", result : undefined}
+    worksheet_payout.getCell(columnLetter + "2").value = { formula : "='" + logicSheetName(periods[i]).sheetName + " ST'!C3", result : undefined}
+    worksheet_payout.getCell(columnLetter + "3").value = { formula : "='" + logicSheetName(periods[i]).sheetName + " ST'!C6", result : undefined}
     worksheet_payout.getCell(columnLetter + "4").value = { formula : "=" + columnLetter +"2-" + columnLetter + "3", result : undefined}
 
-    worksheet_payout.getCell(columnLetter + "6").value = { formula : "='" + createSheetName(periods[i]).sheetName + " ST'!C2", result : undefined}
-    worksheet_payout.getCell(columnLetter + "7").value = { formula : "='" + createSheetName(periods[i]).sheetName + " ST'!C5", result : undefined}
+    worksheet_payout.getCell(columnLetter + "6").value = { formula : "='" + logicSheetName(periods[i]).sheetName + " ST'!C2", result : undefined}
+    worksheet_payout.getCell(columnLetter + "7").value = { formula : "='" + logicSheetName(periods[i]).sheetName + " ST'!C5", result : undefined}
     worksheet_payout.getCell(columnLetter + "8").value = { formula : "=SUM(R6:R7)", result : undefined}
 
-    worksheet_payout.getCell(columnLetter + "11").value = { formula : "='" + createSheetName(periods[i]).sheetName + " ST'!C11", result : undefined}
-    worksheet_payout.getCell(columnLetter + "12").value = { formula : "='" + createSheetName(periods[i]).sheetName + " ST'!C12", result : undefined}
-    worksheet_payout.getCell(columnLetter + "13").value = { formula : "='" + createSheetName(periods[i]).sheetName + " ST'!C13", result : undefined}
-    worksheet_payout.getCell(columnLetter + "14").value = { formula : "='" + createSheetName(periods[i]).sheetName + " ST'!C14", result : undefined}
-    worksheet_payout.getCell(columnLetter + "15").value = { formula : "='" + createSheetName(periods[i]).sheetName + " ST'!C15", result : undefined}
-    worksheet_payout.getCell(columnLetter + "16").value = { formula : "='" + createSheetName(periods[i]).sheetName + " ST'!C16", result : undefined}
-    worksheet_payout.getCell(columnLetter + "17").value = { formula : "='" + createSheetName(periods[i]).sheetName + " ST'!C17", result : undefined}
+    worksheet_payout.getCell(columnLetter + "11").value = { formula : "='" + logicSheetName(periods[i]).sheetName + " ST'!C11", result : undefined}
+    worksheet_payout.getCell(columnLetter + "12").value = { formula : "='" + logicSheetName(periods[i]).sheetName + " ST'!C12", result : undefined}
+    worksheet_payout.getCell(columnLetter + "13").value = { formula : "='" + logicSheetName(periods[i]).sheetName + " ST'!C13", result : undefined}
+    worksheet_payout.getCell(columnLetter + "14").value = { formula : "='" + logicSheetName(periods[i]).sheetName + " ST'!C14", result : undefined}
+    worksheet_payout.getCell(columnLetter + "15").value = { formula : "='" + logicSheetName(periods[i]).sheetName + " ST'!C15", result : undefined}
+    worksheet_payout.getCell(columnLetter + "16").value = { formula : "='" + logicSheetName(periods[i]).sheetName + " ST'!C16", result : undefined}
+    worksheet_payout.getCell(columnLetter + "17").value = { formula : "='" + logicSheetName(periods[i]).sheetName + " ST'!C17", result : undefined}
 
     worksheet_payout.getCell(columnLetter + "19").value = { formula : "=SUM(" + columnLetter + "11:" + columnLetter + "18)", result : undefined}
     worksheet_payout.getCell(columnLetter + "22").value = { formula : "=(" + columnLetter + "4+" + columnLetter + "8+" + columnLetter + "21)-" + columnLetter + "19", result : undefined}
@@ -145,14 +146,11 @@ async function payout(artist_name, periods, workbook){
 
     var startingColumn = 27;
     var reserveColumn = startingColumn + 12;
-    worksheet_payout.getCell("A" + (startingColumn + i)).value = createSheetName(periods[i]).date;
+    worksheet_payout.getCell("A" + (startingColumn + i)).value = logicSheetName(periods[i]).date;
     worksheet_payout.getCell("B" + (startingColumn + i)).value =  { formula : "=" + columnLetter + "22", result : undefined}
     worksheet_payout.getCell("C" + (startingColumn + i)).value =  { formula : "=" + columnLetter + "12", result : undefined}
     worksheet_payout.getCell("D" + (reserveColumn + i)).value =  { formula : "=C" + (startingColumn + i), result : undefined}
-    //worksheet_payout.getCell("E" + (startingColumn + i)).value =  { formula : "=" + columnLetter + "22", result : undefined}
-    //worksheet_payout.getCell("E" + (startingColumn + i)).value =  { formula : "=B" + (startingColumn + i) + "+" + "C" + (startingColumn + i), result : undefined}
     worksheet_payout.getCell("E" + (startingColumn + i)).value =  { formula : "=B" + (startingColumn + i) + "+" + "C" + (startingColumn + i) + "+" + "E" + (startingColumn + (i - 1)), result : undefined}
-
   } //end loop
 } //end payout function
 

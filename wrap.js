@@ -17,7 +17,7 @@ const {
   GetArtistAndPeriodQuery
 } = require("./queries");
 const { worksheetValues, worksheetColumns } = require("./constants");
-const { createSheetName } = require("./functions");
+const { logicSheetName } = require("./functions");
 
 async function wrap(artist, period, workbook, pool) {
 
@@ -25,7 +25,7 @@ async function wrap(artist, period, workbook, pool) {
   //********************************** SH **********************************
   //************************************************************************
   let mainSpace
-  let worksheet = workbook.addWorksheet(createSheetName(period).sheetName + ' SH');
+  let worksheet = workbook.addWorksheet(logicSheetName(period).sheetName + ' SH');
 
   //************************************************************************
   //*****************************Channel Report ****************************
@@ -266,7 +266,7 @@ async function wrap(artist, period, workbook, pool) {
   //********************************** BEGIN CB *******************************************************
   //***************************************************************************************************
 
-  let worksheet_cb = workbook.addWorksheet(createSheetName(period).sheetName + ' CB');
+  let worksheet_cb = workbook.addWorksheet(logicSheetName(period).sheetName + ' CB');
   //************************* CB DATA DUMP **********************************************************
   let cb_length
   try {
@@ -332,9 +332,9 @@ async function wrap(artist, period, workbook, pool) {
   //***************************************************************************************************
   //********************************** Begin ST *******************************************************
   //***************************************************************************************************
-  let worksheet_st = workbook.addWorksheet(createSheetName(period).sheetName + ' ST');
+  let worksheet_st = workbook.addWorksheet(logicSheetName(period).sheetName + ' ST');
   //HEADERS
-  worksheet_st.getCell("B1").value = createSheetName(period).date;
+  worksheet_st.getCell("B1").value = logicSheetName(period).date;
   worksheet_st.getCell("A1").value = artist;
   worksheet_st.getCell("A2").value = "Digital";
   worksheet_st.getCell("A3").value = "Physical Sales";

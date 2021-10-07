@@ -1,75 +1,27 @@
-function createSheetName(period) {
-	let obj = {
-		sheetName: '',
-		date: '',
-    cb_period: ''
-	}
-  //let sheetName;
+function logicSheetName(period) {
+  var monthNamesArr = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+           "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+  var sheetMonthArr = [ "01", "02", "03", "04", "05", "06", 
+         "07", "08", "09", "10", "11", "12" ];
 
-  switch (period) {
-    case "2021M1":
-      obj.sheetName = "0121";
-      obj.date = 'Jan-21';
-      cb_period = '121';
-      break;
-    case "2021M2":
-      obj.sheetName = "0221";
-      obj.date = 'Feb-21';
-      cb_period = '221';
-      break;
-    case "2021M3":
-      obj.sheetName = "0321";
-      obj.date = 'Mar-21';
-      cb_period = '321';
-      break;
-    case "2021M4":
-      obj.sheetName = "0421";
-      obj.date = 'Apr-21';
-      cb_period = '421';
-      break;
-    case "2021M5":
-      obj.sheetName = "0521";
-      obj.date = 'May-21';
-      cb_period = '521';
-      break;
-    case "2021M6":
-      obj.sheetName = "0621";
-      obj.date = 'Jun-21';
-      cb_period = '621';
-      break;
-    case "2021M7":
-      obj.sheetName = "0721";
-      obj.date = 'Jul-21';
-      cb_period = '721';
-      break;
-    case "2021M8":
-      obj.sheetName = "0821";
-      obj.date = 'Aug-21';
-      cb_period = '821';
-      break;
-    case "2021M9":
-      obj.sheetName = "0921";
-      obj.date = 'Sep-21';
-      cb_period = '921';
-      break;
-    case "2021M10":
-     obj.sheetName = "1021";
-     obj.date = 'Oct-21';
-     cb_period = '1021';
-      break;
-    case "2021M11":
-      obj.sheetName = "1121";
-      obj.date = 'Nov-21';
-      cb_period = '1121';
-      break;
-    case "2021M12":
-      obj.sheetName = "1221";
-      obj.date = 'Dec-21';
-      cb_period = '1221';
-      break;
+  var year = period.substring(2,4)
+  var month = period.substring(5,7)
+  var monthName = monthNamesArr[Number(month) - 1];
+  var sheetName = sheetMonthArr[Number(month) - 1] + year;
+    let obj = {
+    year: year,
+    month: month,
+    dateName: monthName,
+    date: monthName + '-' + year,
+    sheetName: sheetName
   }
-  return obj;
+  return obj
+}
+
+function getLastDate (periods) {
+  var lastDate = periods[periods.length - 2];
+  return lastDate;
 }
 
 
-module.exports = { createSheetName }
+module.exports = { getLastDate, logicSheetName }
