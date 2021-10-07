@@ -163,7 +163,19 @@ async function payout(artist_name, periods, workbook){
   for(j=0;j<12;j++){
     worksheet_payout.getCell("A" + (futureDateStart + j)).value = logicSheetName(lastDate).nextMonths[j];
   }
+  workbook.views = [
+    {
+      x: 0, y: 0, width: 40000, height: 30000,
+      firstSheet: 0, activeTab: Number(worksheet_payout.id) - 1, visibility: 'visible'
+    }
+  ]
 
+  //   workbook.views = [
+  //   {
+  //     activeTab: Number(worksheet_payout.id) - 1
+  //   }
+  // ]
+  //console.log(worksheet_payout.id)
 } //end payout function
 
 
