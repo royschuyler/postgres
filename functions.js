@@ -15,12 +15,30 @@ function logicSheetName(period) {
     date: monthName + '-' + year,
     sheetName: sheetName
   }
+    //getNext 12 months
+    month = Number(month);
+    year = Number(year);
+
+    var res = [];
+    for (var i = 0; i < 13; ++i) {
+        res.push(monthNamesArr[month] + '-' + year);
+        if (++month === 12) {
+            month = 0;
+            ++year;
+        }
+    }
+  
+  obj.nextMonths = res;
   return obj
 }
 
 function getLastDate (periods) {
   var lastDate = periods[periods.length - 2];
   return lastDate;
+}
+
+function getNextMonths (period) {
+
 }
 
 
