@@ -146,12 +146,24 @@ async function payout(artist_name, periods, workbook){
 
     var startingColumn = 27;
     var reserveColumn = startingColumn + 12;
+    var futureDateStart = startingColumn + periods.length;
     worksheet_payout.getCell("A" + (startingColumn + i)).value = logicSheetName(periods[i]).date;
+
+    for(j=0;j<12;j++){
+      worksheet_payout.getCell("A" + (futureDateStart + j)).value = logicSheetName(periods[i]).nextMonths[j];
+    }
+
     worksheet_payout.getCell("B" + (startingColumn + i)).value =  { formula : "=" + columnLetter + "22", result : undefined}
     worksheet_payout.getCell("C" + (startingColumn + i)).value =  { formula : "=" + columnLetter + "12", result : undefined}
     worksheet_payout.getCell("D" + (reserveColumn + i)).value =  { formula : "=C" + (startingColumn + i), result : undefined}
     worksheet_payout.getCell("E" + (startingColumn + i)).value =  { formula : "=B" + (startingColumn + i) + "+" + "C" + (startingColumn + i) + "+" + "E" + (startingColumn + (i - 1)), result : undefined}
-  } //end loop
+  } //end loop i
+
+  let lastDate = getLastDate(periods)
+  for(j=0;j<12;j++){
+    worksheet_payout.getCell("A" + (futureDateStart + j)).value = logicSheetName(lastDate).nextMonths[j];
+  }
+
 } //end payout function
 
 
