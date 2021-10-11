@@ -2,7 +2,8 @@ function getLastDate (periods) {
   var lastDate = periods[periods.length - 1];
   return lastDate;
 }
-
+//201911
+//201901
 function logicSheetName(period) {
   var monthNamesArr = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", 
            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
@@ -10,7 +11,7 @@ function logicSheetName(period) {
          "07", "08", "09", "10", "11", "12" ];
 
   var year = period.substring(2,4)
-  var month = period.substring(5,7)
+  var month = period.substring(4,7)
   var monthName = monthNamesArr[Number(month) - 1];
   var sheetName = sheetMonthArr[Number(month) - 1] + year;
     let obj = {
@@ -36,9 +37,6 @@ function logicSheetName(period) {
   obj.nextMonths = res;
   return obj
 }
-
-
-
 
 
 module.exports = { getLastDate, logicSheetName }

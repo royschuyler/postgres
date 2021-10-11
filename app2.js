@@ -46,6 +46,7 @@ async function getArtisAndPeriods(){
 
 async function run(artist_name, periods, workbook) {
   console.log('Begining: ' + artist_name + ' file.')
+  //console.log(periods)
   for (let period of periods) {
     await wrap(artist_name, period, workbook, pool, periods)
     console.log('Creating: ' + artist_name + ' ' + period + ' sheets.')
@@ -107,8 +108,18 @@ async function payout(artist_name, periods, workbook){
   worksheet_payout.getCell("E25").value = "Current Balance";
   worksheet_payout.getCell("E25").font = { bold: true };
 
+
   for(i=0;i<periods.length;i++){
-    var columnLetter = ((i+2) + 9).toString(36).toUpperCase();
+    //var columnLetter = ((i+2) + 9).toString(36).toUpperCase();
+
+    var columnLetter = ["B","C","D","E","F","G","H","I","J","K",
+    "L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","AA",
+    "AB","AC","AD","AE","AF","AG","AH","AI","AJ","AK","AL","AM","AN",
+    "AO","AP","AQ","AR","AS","AT","AU","AV","AW","AX","AY","AZ","BA",
+    "BB","BC","BD","BE","BF","BG","BH","BI","BJ","BK","BL","BM","BN",
+    "BO","BP","BQ","BR","BS","BT","BU","BV","BW","BX","BY","BZ"]
+
+    var columnLetter = columnLetter[i+1]
 
     worksheet_payout.getCell(columnLetter + "1").value = logicSheetName(periods[i]).date;
     worksheet_payout.getCell(columnLetter + "1").font = { bold: true }; 
@@ -145,8 +156,9 @@ async function payout(artist_name, periods, workbook){
     worksheet_payout.getCell('F25').alignment = { wrapText: true };
 
     var startingColumn = 27;
-    var reserveColumn = startingColumn + 12;
-    var futureDateStart = startingColumn + periods.length;
+    var reserveColumn = Number(startingColumn) + 12;
+    var futureDateStart = Number(startingColumn) + Number(periods.length);
+
     worksheet_payout.getCell("A" + (startingColumn + i)).value = logicSheetName(periods[i]).date;
 
     for(j=0;j<12;j++){
