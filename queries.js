@@ -52,6 +52,18 @@ function LogTotalQuery(pool, artist, period) {
   return pool.query(`SELECT SUM(label_share_net_receipts) as total, trans_type_description from main where artist_name = '${artist}' and period_order = '${period}' and trans_type_description in ('Physical Sales','Physical Returns','Non-interactive Radio') group by trans_type_description`)
 }
 
+function LogTotalQueryPhysicalSales(pool, artist, period) {
+  return pool.query(`SELECT SUM(label_share_net_receipts) as total from main where artist_name = '${artist}' and period_order = '${period}' and trans_type_description = 'Physical Sales'`)
+}
+
+function LogTotalQueryPhysicalReturns(pool, artist, period) {
+  return pool.query(`SELECT SUM(label_share_net_receipts) as total from main where artist_name = '${artist}' and period_order = '${period}' and trans_type_description = 'Physical Returns'`)
+}
+
+function LogTotalQueryNonRadio(pool, artist, period) {
+  return pool.query(`SELECT SUM(label_share_net_receipts) as total from main where artist_name = '${artist}' and period_order = '${period}' and trans_type_description = 'Non-interactive Radio'`)
+}
+
 //*********************************** CB sheet queries *********************************************
 function ChargeBackDataQuery(pool, artist, period) {
   return pool.query(`select expense,expense_type,release,upc,total from chargebacks where artist_name = '${artist}' and period_order = '${period}' and upc is not null group by expense_type,expense,release,upc,total order by total`)
@@ -64,7 +76,7 @@ function ChargeBackTotalQuery(pool, artist, period) {
 
 //********************************** Get Artist and Period Queries ********************************
 function GetArtistAndPeriodQuery(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main group by artist_name limit 1`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name = 'Jesse Daniel' group by artist_name `)
 }
 
 
@@ -82,6 +94,9 @@ module.exports = {
   DigitalTotalQuery,
   PhysicalTotalQuery,
   LogTotalQuery,
+  LogTotalQueryPhysicalSales,
+  LogTotalQueryPhysicalReturns,
+  LogTotalQueryNonRadio,
   ChargeBackDataQuery,
   ChargeBackTotalQuery,
   GetArtistAndPeriodQuery

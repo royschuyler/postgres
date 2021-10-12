@@ -19,6 +19,9 @@ const {
   ChargeBackDataQuery,
   ChargeBackTotalQuery,
   LogTotalQuery,
+  LogTotalQueryPhysicalSales,
+  LogTotalQueryPhysicalReturns,
+  LogTotalQueryNonRadio,
   GetArtistAndPeriodQuery
 } = require("./queries");
 //***************db Connect*************************************************
@@ -112,14 +115,14 @@ async function payout(artist_name, periods, workbook){
   for(i=0;i<periods.length;i++){
     //var columnLetter = ((i+2) + 9).toString(36).toUpperCase();
 
-    var columnLetter = ["B","C","D","E","F","G","H","I","J","K",
+    var columnLetter = ["A","B","C","D","E","F","G","H","I","J","K",
     "L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","AA",
     "AB","AC","AD","AE","AF","AG","AH","AI","AJ","AK","AL","AM","AN",
     "AO","AP","AQ","AR","AS","AT","AU","AV","AW","AX","AY","AZ","BA",
     "BB","BC","BD","BE","BF","BG","BH","BI","BJ","BK","BL","BM","BN",
     "BO","BP","BQ","BR","BS","BT","BU","BV","BW","BX","BY","BZ"]
 
-    var columnLetter = columnLetter[i+1]
+    var columnLetter = columnLetter[i+1] //want to start with B
 
     worksheet_payout.getCell(columnLetter + "1").value = logicSheetName(periods[i]).date;
     worksheet_payout.getCell(columnLetter + "1").font = { bold: true }; 
@@ -130,7 +133,7 @@ async function payout(artist_name, periods, workbook){
 
     worksheet_payout.getCell(columnLetter + "6").value = { formula : "='" + logicSheetName(periods[i]).sheetName + " ST'!C2", result : undefined}
     worksheet_payout.getCell(columnLetter + "7").value = { formula : "='" + logicSheetName(periods[i]).sheetName + " ST'!C5", result : undefined}
-    worksheet_payout.getCell(columnLetter + "8").value = { formula : "=SUM(R6:R7)", result : undefined}
+    worksheet_payout.getCell(columnLetter + "8").value = { formula : "=SUM(" + columnLetter + "6:" + columnLetter + "7)", result : undefined}
 
     worksheet_payout.getCell(columnLetter + "11").value = { formula : "='" + logicSheetName(periods[i]).sheetName + " ST'!C11", result : undefined}
     worksheet_payout.getCell(columnLetter + "12").value = { formula : "='" + logicSheetName(periods[i]).sheetName + " ST'!C12", result : undefined}

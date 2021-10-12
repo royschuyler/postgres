@@ -14,6 +14,9 @@ const {
   ChargeBackDataQuery,
   ChargeBackTotalQuery,
   LogTotalQuery,
+  LogTotalQueryPhysicalSales,
+  LogTotalQueryPhysicalReturns,
+  LogTotalQueryNonRadio,
   GetArtistAndPeriodQuery
 } = require("./queries");
 const { worksheetValues, worksheetColumns } = require("./constants");
@@ -365,6 +368,54 @@ async function wrap(artist, period, workbook, pool) {
     console.log(error);
   }
 
+  //PhysicalTotal
+  let physicalTotal
+  try {
+    let res = await LogTotalQueryPhysicalSales(pool, artist, period);
+    let resp = res.rows;
+    if(resp[0].total){
+      physicalTotal = Number(resp[0].total.toFixed(2))
+    } else{
+      physicalTotal = 0.00
+    }
+    
+    worksheet_st.getCell("C3").value = physicalTotal;
+  } catch (error) {
+    console.log(error);
+  }
+
+  //PhysicalReturns
+  let physicalReturns
+  try {
+    let res = await LogTotalQueryPhysicalReturns(pool, artist, period);
+    let resp = res.rows;
+    if(resp[0].total){
+      physicalReturns = Number(resp[0].total.toFixed(2))
+    } else{
+      physicalReturns = 0.00
+    }
+    
+    worksheet_st.getCell("C6").value = physicalReturns * -1;
+  } catch (error) {
+    console.log(error);
+  }
+
+  //Non-InteractiveRadio
+  let nonInteractiveRadio
+  try {
+    let res = await LogTotalQueryNonRadio(pool, artist, period);
+    let resp = res.rows;
+    if(resp[0].total){
+      nonInteractiveRadio = Number(resp[0].total.toFixed(2))
+    } else{
+      nonInteractiveRadio = 0.00
+    }
+    
+    worksheet_st.getCell("C5").value = nonInteractiveRadio;
+  } catch (error) {
+    console.log(error);
+  }
+/*
   // log Total
   let physicalTotal
   let nonInteractiveRadio
@@ -389,7 +440,10 @@ async function wrap(artist, period, workbook, pool) {
     } else {
       physicalReturns = 0.00
     }
-    
+    console.log('physicalTotal: ' + physicalTotal)
+    console.log('resp0: ' + resp[0])
+    console.log('resp1: ' + resp[1])
+    console.log('resp2: ' + resp[2])
 
     worksheet_st.getCell("C5").value = nonInteractiveRadio; // Non-interactive Radio
     worksheet_st.getCell("C6").value = physicalReturns; // physical returns
@@ -397,7 +451,7 @@ async function wrap(artist, period, workbook, pool) {
   } catch (error) {
     console.log(error);
   }
-
+*/
 //****************** st report non-query tabulations *****************************
   const distributionFee = .28;
   const reserveForFutureReturns = .25;
