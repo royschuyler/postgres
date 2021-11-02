@@ -24,11 +24,215 @@ const { logicSheetName } = require("./functions");
 
 async function wrap(artist, period, workbook, pool) {
 
+  //***************************************************************************************************
+  //********************************** Begin ST *******************************************************
+  //***************************************************************************************************
+  let worksheet_st = workbook.addWorksheet(logicSheetName(period).sheetName + ' ST');
+  console.log('Working: ' + artist + ' ' + period + ' ' + 'ST worksheet')
+  //HEADERS
+  worksheet_st.getCell("B1").value = logicSheetName(period).date;
+  worksheet_st.getCell("A1").value = artist;
+  worksheet_st.getCell("A2").value = "Digital";
+  worksheet_st.getCell("A3").value = "Physical Sales";
+  worksheet_st.getCell("A5").value = "Non-interactive Radio";
+  worksheet_st.getCell("A6").value = "Physical Returns";
+  worksheet_st.getCell("A8").value = "Net Billings";
+  worksheet_st.getCell("A10").value = "DEDUCTIONS AND FEES";
+  worksheet_st.getCell("A11").value = "Distribution Fee";
+  worksheet_st.getCell("A12").value = "Reserve For Future Returns";
+  worksheet_st.getCell("A13").value = "Returns Handling";
+  worksheet_st.getCell("A14").value = "Digital Sales Dist. Fee";
+  worksheet_st.getCell("A15").value = "Marketing Fees";
+  worksheet_st.getCell("A16").value = "Chargebacks";
+  worksheet_st.getCell("A17").value = "Open Accruals";
+  worksheet_st.getCell("A18").value = "Total Deductions And Fees";
+  worksheet_st.getCell("A19").value = "Perf Rights";
+  worksheet_st.getCell("A21").value = "Net Proceeds Due 120 Days";
+
+  let cbTotalSt
+  try {
+    let res = await ChargeBackTotalQuery(pool, artist, period);
+    let resp = res.rows;
+    if(resp[0].sum){
+          cbTotalSt = Number(resp[0].sum.toFixed(2))
+        } else {
+          cbTotalSt = 0.00
+        }
+  } catch (error) {
+    console.log(error);
+  }
+
+
+  // Digital Total
+  let digitalTotal
+  try {
+    let res = await DigitalTotalQuery(pool, artist, period);
+    let resp = res.rows;
+    digitalTotal = Number(resp[0].digital.toFixed(2))
+    worksheet_st.getCell("C2").value = digitalTotal;
+  } catch (error) {
+    console.log(error);
+  }
+
+  //PhysicalTotal
+  let physicalTotal
+  try {
+    let res = await LogTotalQueryPhysicalSales(pool, artist, period);
+    let resp = res.rows;
+    if(resp[0].total){
+      physicalTotal = Number(resp[0].total.toFixed(2))
+    } else{
+      physicalTotal = 0.00
+    }
+    
+    worksheet_st.getCell("C3").value = physicalTotal;
+  } catch (error) {
+    console.log(error);
+  }
+
+  //PhysicalReturns
+  let physicalReturns
+  try {
+    let res = await LogTotalQueryPhysicalReturns(pool, artist, period);
+    let resp = res.rows;
+    if(resp[0].total){
+      physicalReturns = Number(resp[0].total.toFixed(2))
+    } else{
+      physicalReturns = 0.00
+    }
+    
+    worksheet_st.getCell("C6").value = physicalReturns;
+  } catch (error) {
+    console.log(error);
+  }
+
+  //Non-InteractiveRadio
+  let nonInteractiveRadio
+  try {
+    let res = await LogTotalQueryNonRadio(pool, artist, period);
+    let resp = res.rows;
+    if(resp[0].total){
+      nonInteractiveRadio = Number(resp[0].total.toFixed(2))
+    } else{
+      nonInteractiveRadio = 0.00
+    }
+    
+    worksheet_st.getCell("C5").value = nonInteractiveRadio;
+  } catch (error) {
+    console.log(error);
+  }
+
+//****************** st report non-query tabulations *****************************
+  const distributionFee = .26;
+  const reserveForFutureReturns = .25;
+  const returnsHandling = .02;
+  const digitalSalesFee = .22;
+
+  worksheet_st.getCell("B11").value = distributionFee;
+  worksheet_st.getCell("B12").value = reserveForFutureReturns;
+  worksheet_st.getCell("B13").value = returnsHandling;
+  worksheet_st.getCell("B14").value = digitalSalesFee;
+
+  var netBillings = parseFloat(digitalTotal + nonInteractiveRadio + physicalTotal + physicalReturns).toFixed(2)
+  var distributionFeeTotal = parseFloat((physicalTotal + physicalReturns) * distributionFee).toFixed(2)
+  var reserveForFutureReturnsTotal = parseFloat(physicalTotal * reserveForFutureReturns).toFixed(2)
+  var returnsHandlingTotal = parseFloat(physicalTotal * returnsHandling).toFixed(2)
+  var digitalSalesFeeTotal = parseFloat((digitalTotal + nonInteractiveRadio) * digitalSalesFee).toFixed(2)
+
+  //make excel do the formulas
+  worksheet_st.getCell("C8").value =  { formula : "(C2+C5)+(C3+C6)", result : distributionFeeTotal}
+  worksheet_st.getCell("C11").value = { formula : "(C3-C6)*B11", result : netBillings}
+  worksheet_st.getCell("C12").value = { formula : "C3*B12", result : reserveForFutureReturnsTotal}
+  worksheet_st.getCell("C13").value = { formula : "=ABS(C6*B13)", result : returnsHandlingTotal}
+  worksheet_st.getCell("C14").value = { formula : "=(C2+C5)*B14", result : digitalSalesFeeTotal}
+  worksheet_st.getCell("C15").value = 0.00;
+  worksheet_st.getCell("C16").value = cbTotalSt * -1;
+  worksheet_st.getCell("C17").value = 0.00;
+  var stTotal = Number(distributionFeeTotal)+Number(reserveForFutureReturnsTotal)+Number(returnsHandlingTotal)+
+  Number(digitalSalesFeeTotal)+Number((cbTotalSt * -1));
+  worksheet_st.getCell("C18").value = { formula : "=SUM(C11:C17)", result : stTotal}
+  var perfRights = 0.00;
+  worksheet_st.getCell("C19").value = perfRights;
+  var netProceeds = Number(Number(netBillings)-Number(stTotal)+Number(perfRights));
+  worksheet_st.getCell("C21").value = { formula : "=C8-C18+C19", result : netProceeds}
+
+  //***************************************************************************************************
+  //********************************** END ST *********************************************************
+  //***************************************************************************************************
+
+  //***************************************************************************************************
+  //********************************** BEGIN CB *******************************************************
+  //***************************************************************************************************
+
+  let worksheet_cb = workbook.addWorksheet(logicSheetName(period).sheetName + ' CB');
+  console.log('Working: ' + artist + ' ' + period + ' ' + 'CB worksheet')
+  //************************* CB DATA DUMP **********************************************************
+  let cb_length
+  try {
+    let res = await ChargeBackDataQuery(pool, artist, period);
+    let data = res.rows;
+    cb_length = data.length;
+
+    //CB HEADERS
+    worksheet_cb.getCell("A1").value = "EXPENSE";
+    worksheet_cb.getCell("B1").value = "EXPENSE TYPE";
+    worksheet_cb.getCell("C1").value = "PRODUCT";
+    worksheet_cb.getCell("D1").value = "UPC";
+    worksheet_cb.getCell("E1").value = "TOTAL";
+
+    for(i=0;i<data.length;i++){
+      worksheet_cb.getCell("A" + (i + 2)).value = data[i].expense;
+      worksheet_cb.getCell("B" + (i + 2)).value = data[i].expense_type;
+      worksheet_cb.getCell("C" + (i + 2)).value = data[i].release;
+      worksheet_cb.getCell("D" + (i + 2)).value = data[i].upc;
+      if(data[i]){
+        worksheet_cb.getCell("E" + (i + 2)).value = Number(data[i].total.toFixed(2));
+      } else {
+        worksheet_cb.getCell("E" + (i + 2)).value = 0.00;
+      }
+      worksheet_cb.getCell("E" + (i + 2)).font = {
+        color: {argb: 'ffff0000'},
+        bold: true
+      };
+    }
+
+  } catch (error) {
+    console.log(error);
+  }
+
+  //******************************* CB TOTAL ***************************************************
+  let cbTotal
+  try {
+    let res = await ChargeBackTotalQuery(pool, artist, period);
+    let resp = res.rows;
+    //console.log(resp)
+    worksheet_cb.getCell("A" + (cb_length + 3)).value = "Total";
+    if(resp[0].sum){
+          worksheet_cb.getCell("B" + (cb_length + 3)).value = Number(resp[0].sum.toFixed(2));
+          cbTotal = Number(resp[0].sum.toFixed(2))
+        } else {
+          worksheet_cb.getCell("B" + (cb_length + 3)).value = 0.00;
+          cbTotal = 0.00
+        }
+
+    worksheet_cb.getCell("B" + (cb_length + 3)).font = {
+        color: {argb: 'ffff0000'},
+        bold: true
+      };
+  } catch (error) {
+    console.log(error);
+  }
+
+  //***************************************************************************************************
+  //********************************** END CB *********************************************************
+  //***************************************************************************************************
+
   //************************************************************************
   //********************************** SH **********************************
   //************************************************************************
   let mainSpace
   let worksheet = workbook.addWorksheet(logicSheetName(period).sheetName + ' SH');
+  console.log('Working: ' + artist + ' ' + period + ' ' + 'SH worksheet')
 
   //************************************************************************
   //*****************************Channel Report ****************************
@@ -265,230 +469,6 @@ async function wrap(artist, period, workbook, pool) {
   //********************************** END SH *********************************************************
   //***************************************************************************************************
 
-  //***************************************************************************************************
-  //********************************** BEGIN CB *******************************************************
-  //***************************************************************************************************
-
-  let worksheet_cb = workbook.addWorksheet(logicSheetName(period).sheetName + ' CB');
-  //************************* CB DATA DUMP **********************************************************
-  let cb_length
-  try {
-    let res = await ChargeBackDataQuery(pool, artist, period);
-    let data = res.rows;
-    cb_length = data.length;
-
-    //CB HEADERS
-    worksheet_cb.getCell("A1").value = "EXPENSE";
-    worksheet_cb.getCell("B1").value = "EXPENSE TYPE";
-    worksheet_cb.getCell("C1").value = "PRODUCT";
-    worksheet_cb.getCell("D1").value = "UPC";
-    worksheet_cb.getCell("E1").value = "TOTAL";
-
-    for(i=0;i<data.length;i++){
-      worksheet_cb.getCell("A" + (i + 2)).value = data[i].expense;
-      worksheet_cb.getCell("B" + (i + 2)).value = data[i].expense_type;
-      worksheet_cb.getCell("C" + (i + 2)).value = data[i].release;
-      worksheet_cb.getCell("D" + (i + 2)).value = data[i].upc;
-      if(data[i]){
-        worksheet_cb.getCell("E" + (i + 2)).value = Number(data[i].total.toFixed(2));
-      } else {
-        worksheet_cb.getCell("E" + (i + 2)).value = 0.00;
-      }
-      worksheet_cb.getCell("E" + (i + 2)).font = {
-        color: {argb: 'ffff0000'},
-        bold: true
-      };
-    }
-
-  } catch (error) {
-    console.log(error);
-  }
-
-  //******************************* CB TOTAL ***************************************************
-  let cbTotal
-  try {
-    let res = await ChargeBackTotalQuery(pool, artist, period);
-    let resp = res.rows;
-    //console.log(resp)
-    worksheet_cb.getCell("A" + (cb_length + 3)).value = "Total";
-    if(resp[0].sum){
-          worksheet_cb.getCell("B" + (cb_length + 3)).value = Number(resp[0].sum.toFixed(2));
-          cbTotal = Number(resp[0].sum.toFixed(2))
-        } else {
-          worksheet_cb.getCell("B" + (cb_length + 3)).value = 0.00;
-          cbTotal = 0.00
-        }
-
-    worksheet_cb.getCell("B" + (cb_length + 3)).font = {
-        color: {argb: 'ffff0000'},
-        bold: true
-      };
-  } catch (error) {
-    console.log(error);
-  }
-
-  //***************************************************************************************************
-  //********************************** END CB *********************************************************
-  //***************************************************************************************************
-
-
-  //***************************************************************************************************
-  //********************************** Begin ST *******************************************************
-  //***************************************************************************************************
-  let worksheet_st = workbook.addWorksheet(logicSheetName(period).sheetName + ' ST');
-  //HEADERS
-  worksheet_st.getCell("B1").value = logicSheetName(period).date;
-  worksheet_st.getCell("A1").value = artist;
-  worksheet_st.getCell("A2").value = "Digital";
-  worksheet_st.getCell("A3").value = "Physical Sales";
-  worksheet_st.getCell("A5").value = "Non-interactive Radio";
-  worksheet_st.getCell("A6").value = "Physical Returns";
-  worksheet_st.getCell("A8").value = "Net Billings";
-  worksheet_st.getCell("A10").value = "DEDUCTIONS AND FEES";
-  worksheet_st.getCell("A11").value = "Distribution Fee";
-  worksheet_st.getCell("A12").value = "Reserve For Future Returns";
-  worksheet_st.getCell("A13").value = "Returns Handling";
-  worksheet_st.getCell("A14").value = "Digital Sales Dist. Fee";
-  worksheet_st.getCell("A15").value = "Marketing Fees";
-  worksheet_st.getCell("A16").value = "Chargebacks";
-  worksheet_st.getCell("A17").value = "Open Accruals";
-  worksheet_st.getCell("A18").value = "Total Deductions And Fees";
-  worksheet_st.getCell("A19").value = "Perf Rights";
-  worksheet_st.getCell("A21").value = "Net Proceeds Due 120 Days";
-
-
-  // Digital Total
-  let digitalTotal
-  try {
-    let res = await DigitalTotalQuery(pool, artist, period);
-    let resp = res.rows;
-    digitalTotal = Number(resp[0].digital.toFixed(2))
-    worksheet_st.getCell("C2").value = digitalTotal;
-  } catch (error) {
-    console.log(error);
-  }
-
-  //PhysicalTotal
-  let physicalTotal
-  try {
-    let res = await LogTotalQueryPhysicalSales(pool, artist, period);
-    let resp = res.rows;
-    if(resp[0].total){
-      physicalTotal = Number(resp[0].total.toFixed(2))
-    } else{
-      physicalTotal = 0.00
-    }
-    
-    worksheet_st.getCell("C3").value = physicalTotal;
-  } catch (error) {
-    console.log(error);
-  }
-
-  //PhysicalReturns
-  let physicalReturns
-  try {
-    let res = await LogTotalQueryPhysicalReturns(pool, artist, period);
-    let resp = res.rows;
-    if(resp[0].total){
-      physicalReturns = Number(resp[0].total.toFixed(2))
-    } else{
-      physicalReturns = 0.00
-    }
-    
-    worksheet_st.getCell("C6").value = physicalReturns;
-  } catch (error) {
-    console.log(error);
-  }
-
-  //Non-InteractiveRadio
-  let nonInteractiveRadio
-  try {
-    let res = await LogTotalQueryNonRadio(pool, artist, period);
-    let resp = res.rows;
-    if(resp[0].total){
-      nonInteractiveRadio = Number(resp[0].total.toFixed(2))
-    } else{
-      nonInteractiveRadio = 0.00
-    }
-    
-    worksheet_st.getCell("C5").value = nonInteractiveRadio;
-  } catch (error) {
-    console.log(error);
-  }
-/*
-  // log Total
-  let physicalTotal
-  let nonInteractiveRadio
-  let physicalReturns
-
-  try {
-    let res = await LogTotalQuery(pool, artist, period);
-    let resp = res.rows;
-
-    if(resp[2]){
-      physicalTotal = Number(resp[2].total.toFixed(2))
-    } else {
-      physicalTotal = 0.00;
-    }
-    if(resp[0]){
-      nonInteractiveRadio = Number(resp[0].total.toFixed(2))
-    } else {
-      nonInteractiveRadio = 0.00
-    }
-    if(resp[1]){
-      physicalReturns = Number(resp[1].total.toFixed(2))
-    } else {
-      physicalReturns = 0.00
-    }
-    console.log('physicalTotal: ' + physicalTotal)
-    console.log('resp0: ' + resp[0])
-    console.log('resp1: ' + resp[1])
-    console.log('resp2: ' + resp[2])
-
-    worksheet_st.getCell("C5").value = nonInteractiveRadio; // Non-interactive Radio
-    worksheet_st.getCell("C6").value = physicalReturns; // physical returns
-    worksheet_st.getCell("C3").value = physicalTotal; // physical total
-  } catch (error) {
-    console.log(error);
-  }
-*/
-//****************** st report non-query tabulations *****************************
-  const distributionFee = .26;
-  const reserveForFutureReturns = .25;
-  const returnsHandling = .02;
-  const digitalSalesFee = .22;
-
-  worksheet_st.getCell("B11").value = distributionFee;
-  worksheet_st.getCell("B12").value = reserveForFutureReturns;
-  worksheet_st.getCell("B13").value = returnsHandling;
-  worksheet_st.getCell("B14").value = digitalSalesFee;
-
-  var netBillings = parseFloat(digitalTotal + nonInteractiveRadio + physicalTotal + physicalReturns).toFixed(2)
-  var distributionFeeTotal = parseFloat((physicalTotal + physicalReturns) * distributionFee).toFixed(2)
-  var reserveForFutureReturnsTotal = parseFloat(physicalTotal * reserveForFutureReturns).toFixed(2)
-  var returnsHandlingTotal = parseFloat(physicalTotal * returnsHandling).toFixed(2)
-  var digitalSalesFeeTotal = parseFloat((digitalTotal + nonInteractiveRadio) * digitalSalesFee).toFixed(2)
-
-  //make excel do the formulas
-  worksheet_st.getCell("C8").value =  { formula : "(C2+C5)+(C3+C6)", result : distributionFeeTotal}
-  worksheet_st.getCell("C11").value = { formula : "(C3-C6)*B11", result : netBillings}
-  worksheet_st.getCell("C12").value = { formula : "C3*B12", result : reserveForFutureReturnsTotal}
-  worksheet_st.getCell("C13").value = { formula : "=ABS(C6*B13)", result : returnsHandlingTotal}
-  worksheet_st.getCell("C14").value = { formula : "=(C2+C5)*B14", result : digitalSalesFeeTotal}
-  worksheet_st.getCell("C15").value = 0.00;
-  worksheet_st.getCell("C16").value = cbTotal * -1;
-  worksheet_st.getCell("C17").value = 0.00;
-  var stTotal = Number(distributionFeeTotal)+Number(reserveForFutureReturnsTotal)+Number(returnsHandlingTotal)+
-  Number(digitalSalesFeeTotal)+Number((cbTotal * -1));
-  worksheet_st.getCell("C18").value = { formula : "=SUM(C11:C17)", result : stTotal}
-  var perfRights = 0.00;
-  worksheet_st.getCell("C19").value = perfRights;
-  var netProceeds = Number(Number(netBillings)-Number(stTotal)+Number(perfRights));
-  worksheet_st.getCell("C21").value = { formula : "=C8-C18+C19", result : netProceeds}
-
-  //***************************************************************************************************
-  //********************************** END ST *********************************************************
-  //***************************************************************************************************
 }
 
 

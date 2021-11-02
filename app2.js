@@ -59,6 +59,7 @@ async function run(artist_name, periods, workbook) {
 //******************* BEGIN PAYOUT *************************************
 async function payout(artist_name, periods, workbook){
   let worksheet_payout = workbook.addWorksheet('PAYOUT');
+  console.log('Working: ' + artist_name + ' ' + 'PAYOUT worksheet')
   //HEADERS
   worksheet_payout.getCell("A1").value = "BILLINGS";
   worksheet_payout.getCell("A1").font = { bold: true };
