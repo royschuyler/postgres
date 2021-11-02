@@ -129,7 +129,7 @@ async function payout(artist_name, periods, workbook){
 
     worksheet_payout.getCell(columnLetter + "2").value = { formula : "='" + logicSheetName(periods[i]).sheetName + " ST'!C3", result : undefined}
     worksheet_payout.getCell(columnLetter + "3").value = { formula : "='" + logicSheetName(periods[i]).sheetName + " ST'!C6", result : undefined}
-    worksheet_payout.getCell(columnLetter + "4").value = { formula : "=" + columnLetter +"2-" + columnLetter + "3", result : undefined}
+    worksheet_payout.getCell(columnLetter + "4").value = { formula : "=" + columnLetter +"2-ABS(" + columnLetter + "3)", result : undefined}
 
     worksheet_payout.getCell(columnLetter + "6").value = { formula : "='" + logicSheetName(periods[i]).sheetName + " ST'!C2", result : undefined}
     worksheet_payout.getCell(columnLetter + "7").value = { formula : "='" + logicSheetName(periods[i]).sheetName + " ST'!C5", result : undefined}

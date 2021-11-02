@@ -76,7 +76,7 @@ function ChargeBackTotalQuery(pool, artist, period) {
 
 //********************************** Get Artist and Period Queries ********************************
 function GetArtistAndPeriodQuery(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name = 'Jesse Daniel' group by artist_name `)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Lindi Ortega') and period_order in ('202109') group by artist_name`)
 }
 
 
