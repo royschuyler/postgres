@@ -32,7 +32,8 @@ const {
   GetArtistAndPeriodQuery7,
   GetArtistAndPeriodQuery8,
   GetArtistAndPeriodQuery9,
-  GetArtistAndPeriodQuery10
+  GetArtistAndPeriodQuery10,
+  GetArtistAndPeriodQuery11
 } = require("./queries");
 //***************db Connect*************************************************
 
@@ -50,7 +51,7 @@ const pool = new Pool({
 //************************************************************************
 async function getArtisAndPeriods(){
   try {
-    let res = await GetArtistAndPeriodQuery2(pool);
+    let res = await GetArtistAndPeriodQuery11(pool);
     return res.rows;
   } catch (error) {
     console.log(error);

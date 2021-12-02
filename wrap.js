@@ -68,7 +68,12 @@ async function wrap(artist, period, workbook, pool) {
   try {
     let res = await DigitalTotalQuery(pool, artist, period);
     let resp = res.rows;
-    digitalTotal = Number(resp[0].digital.toFixed(2))
+    if(resp[0].digital){
+      digitalTotal = Number(resp[0].digital.toFixed(2))
+    } else{
+      digitalTotal = 0.00
+    }
+    //digitalTotal = Number(resp[0].digital.toFixed(2))
     worksheet_st.getCell("C2").value = digitalTotal;
   } catch (error) {
     console.log(error);
@@ -101,7 +106,7 @@ async function wrap(artist, period, workbook, pool) {
       physicalReturns = 0.00
     }
     
-    worksheet_st.getCell("C6").value = physicalReturns;
+    worksheet_st.getCell("C6").value = physicalReturns * -1;
   } catch (error) {
     console.log(error);
   }
@@ -123,10 +128,15 @@ async function wrap(artist, period, workbook, pool) {
   }
 
 //****************** st report non-query tabulations *****************************
-  const distributionFee = .26;
+  const distributionFee = .28;
   const reserveForFutureReturns = .25;
   const returnsHandling = .02;
-  const digitalSalesFee = .22;
+  const digitalSalesFee = .26;
+
+  // const distributionFee = .26;
+  // const reserveForFutureReturns = .25;
+  // const returnsHandling = .02;
+  // const digitalSalesFee = .22;
 
   worksheet_st.getCell("B11").value = distributionFee;
   worksheet_st.getCell("B12").value = reserveForFutureReturns;
@@ -140,9 +150,9 @@ async function wrap(artist, period, workbook, pool) {
   var digitalSalesFeeTotal = parseFloat((digitalTotal + nonInteractiveRadio) * digitalSalesFee).toFixed(2)
 
   //make excel do the formulas
-  worksheet_st.getCell("C8").value =  { formula : "(C2+C5)+(C3+C6)", result : distributionFeeTotal}
-  worksheet_st.getCell("C11").value = { formula : "(C3-C6)*B11", result : netBillings}
-  worksheet_st.getCell("C12").value = { formula : "C3*B12", result : reserveForFutureReturnsTotal}
+  worksheet_st.getCell("C8").value =  { formula : "=(C2+C5)+(C3-C6)", result : undefined}
+  worksheet_st.getCell("C11").value = { formula : "=(C3-C6)*B11", result : netBillings}
+  worksheet_st.getCell("C12").value = { formula : "=C3*B12", result : reserveForFutureReturnsTotal}
   worksheet_st.getCell("C13").value = { formula : "=ABS(C6*B13)", result : returnsHandlingTotal}
   worksheet_st.getCell("C14").value = { formula : "=(C2+C5)*B14", result : digitalSalesFeeTotal}
   worksheet_st.getCell("C15").value = 0.00;

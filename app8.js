@@ -50,7 +50,7 @@ const pool = new Pool({
 //************************************************************************
 async function getArtisAndPeriods(){
   try {
-    let res = await GetArtistAndPeriodQuery2(pool);
+    let res = await GetArtistAndPeriodQuery8(pool);
     return res.rows;
   } catch (error) {
     console.log(error);
