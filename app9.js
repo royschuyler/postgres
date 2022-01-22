@@ -32,7 +32,31 @@ const {
   GetArtistAndPeriodQuery7,
   GetArtistAndPeriodQuery8,
   GetArtistAndPeriodQuery9,
-  GetArtistAndPeriodQuery10
+  GetArtistAndPeriodQuery10,
+  GetArtistAndPeriodQuery11,
+  GetArtistAndPeriodQuery12,
+  GetArtistAndPeriodQuery13,
+  GetArtistAndPeriodQuery14,
+  GetArtistAndPeriodQuery15,
+  GetArtistAndPeriodQuery16,
+  GetArtistAndPeriodQuery17,
+  GetArtistAndPeriodQuery18,
+  GetArtistAndPeriodQuery19,
+  GetArtistAndPeriodQuery20,
+  GetArtistAndPeriodQuery21,
+  GetArtistAndPeriodQuery22,
+  GetArtistAndPeriodQuery23,
+  GetArtistAndPeriodQuery24,
+  GetArtistAndPeriodQuery25,
+  GetArtistAndPeriodQuery26,
+  GetArtistAndPeriodQuery27,
+  GetArtistAndPeriodQuery28,
+  GetArtistAndPeriodQuery29,
+  GetArtistAndPeriodQuery30,
+  GetArtistAndPeriodQuery31,
+  GetArtistAndPeriodQuery32,
+  GetArtistAndPeriodQuery33,
+  GetArtistAndPeriodQuery34
 } = require("./queries");
 //***************db Connect*************************************************
 
@@ -50,7 +74,7 @@ const pool = new Pool({
 //************************************************************************
 async function getArtisAndPeriods(){
   try {
-    let res = await GetArtistAndPeriodQuery7(pool);
+    let res = await GetArtistAndPeriodQuery9(pool);
     return res.rows;
   } catch (error) {
     console.log(error);
