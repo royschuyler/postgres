@@ -128,15 +128,15 @@ async function wrap(artist, period, workbook, pool) {
   }
 
 //****************** st report non-query tabulations *****************************
-  // const distributionFee = .28;
-  // const reserveForFutureReturns = .25;
-  // const returnsHandling = .02;
-  // const digitalSalesFee = .26;
-
-  const distributionFee = .26;
+  const distributionFee = .28;
   const reserveForFutureReturns = .25;
   const returnsHandling = .02;
-  const digitalSalesFee = .22;
+  const digitalSalesFee = .26;
+
+  // const distributionFee = .26;
+  // const reserveForFutureReturns = .25;
+  // const returnsHandling = .02;
+  // const digitalSalesFee = .22;
 
   worksheet_st.getCell("B11").value = distributionFee;
   worksheet_st.getCell("B12").value = reserveForFutureReturns;
