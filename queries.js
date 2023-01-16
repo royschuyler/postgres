@@ -92,226 +92,226 @@ function GetArtistAndPeriodQuery1(pool) {
 
 //2
 function GetArtistAndPeriodQuery2(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Adam Hood') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Adam Hood','Alela Diane') group by artist_name`)
 }
 //3
 function GetArtistAndPeriodQuery3(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Ariel Posen') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Ariel Posen','Ashley Ray') group by artist_name`)
 }
 //4
 function GetArtistAndPeriodQuery4(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Ashley Ray') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Aubrie Sellers','Austin Sisk') group by artist_name`)
 }
 //5
 function GetArtistAndPeriodQuery5(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Aubrie Sellers') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('BEEBE','Ben Danaher') group by artist_name`)
 }
 //6
 function GetArtistAndPeriodQuery6(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Austin Sisk') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Ben Sollee','Beth Nielsen Chapman') group by artist_name`)
 }
 //7
 function GetArtistAndPeriodQuery7(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('BEEBE') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Blue Water Highway Band','Bob Schneider') group by artist_name`)
 }
 //8
 function GetArtistAndPeriodQuery8(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Ben Danaher') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Boo Ray','Caleb Caudle') group by artist_name`)
 }
 //9
 function GetArtistAndPeriodQuery9(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Ben Sollee') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Chandler Stephens','Charles Hill, Jr.') group by artist_name`)
 }
 //10
 function GetArtistAndPeriodQuery10(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Beth Nielsen Chapman') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Charlie Marie','Childhood') group by artist_name`)
 }
 //11
 function GetArtistAndPeriodQuery11(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Blue Water Highway Band') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Cody Jinks','Courtney Hartman') group by artist_name`)
 }
 //12
 function GetArtistAndPeriodQuery12(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Bob Schneider') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('DADDY (Will Kimbrough & Tommy Womack)','Dan Knobler') group by artist_name`)
 }
 //13
 function GetArtistAndPeriodQuery13(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Boo Ray') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Darrell Scott','Dave Hause') group by artist_name`)
 }
 //14
 function GetArtistAndPeriodQuery14(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Caleb Caudle') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('David Quinn','Della Mae') group by artist_name`)
 }
 //15
 function GetArtistAndPeriodQuery15(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Chandler Stephens') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Dillon Carmichael','Dylan Hartigan') group by artist_name`)
 }
 //16
 function GetArtistAndPeriodQuery16(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Charles Hill, Jr.') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Eleanor Buckland','Forest Fire Gospel Choir') group by artist_name`)
 }
 //17
 function GetArtistAndPeriodQuery17(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Charlie Marie') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Foxtrot and The Get Down','Fretland') group by artist_name`)
 }
 //18
 function GetArtistAndPeriodQuery18(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Childhood') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Garrison Starr','Gasoline Lollipops') group by artist_name`)
 }
 //19
 function GetArtistAndPeriodQuery19(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Cody Jinks') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Genuine Joy','Great Peacock') group by artist_name`)
 }
 //20
 function GetArtistAndPeriodQuery20(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Courtney Hartman') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Humming House','Israel Nash') group by artist_name`)
 }
 //21
 function GetArtistAndPeriodQuery21(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('DADDY (Will Kimbrough & Tommy Womack)') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Jaclyn Kenyon','Jamie Isaac') group by artist_name`)
 }
 //22
 function GetArtistAndPeriodQuery22(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Darrell Scott') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Jen Cloher','Jerry Joseph') group by artist_name`)
 }
 //23
 function GetArtistAndPeriodQuery23(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Dave Hause') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Jesse Daniel','Jesse Labelle') group by artist_name`)
 }
 //24
 function GetArtistAndPeriodQuery24(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('David Quinn') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Joe Pug','Jordan Rager') group by artist_name`)
 }
 //25
 function GetArtistAndPeriodQuery25(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Della Mae') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Josh Rennie-Hynes','Joshua Davis') group by artist_name`)
 }
 //16
 function GetArtistAndPeriodQuery26(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Dillon Carmichael') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Julia Cole','Justin Wade Tam') group by artist_name`)
 }
 //27
 function GetArtistAndPeriodQuery27(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Dylan Hartigan') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Kaitlin Butts','Katie Schecter') group by artist_name`)
 }
 //28
 function GetArtistAndPeriodQuery28(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Eleanor Buckland') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Ken Yates','Kings Of Spade') group by artist_name`)
 }
 //29
 function GetArtistAndPeriodQuery29(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Forest Fire Gospel Choir') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Kirby Brown','Korby Lenker') group by artist_name`)
 }
 //30
 function GetArtistAndPeriodQuery30(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Foxtrot and The Get Down') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Kyle Nix','LEVI WARE') group by artist_name`)
 }
 //31
 function GetArtistAndPeriodQuery31(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Fretland') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('LUX','Landon Lloyd Miller') group by artist_name`)
 }
 //32
 function GetArtistAndPeriodQuery32(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Garrison Starr') group by artist_name`)}
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Leftover Salmon','Leon III') group by artist_name`)}
 //33
 function GetArtistAndPeriodQuery33(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Gasoline Lollipops') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Lindi Ortega','Lisa Morales') group by artist_name`)
 }
 //34
 function GetArtistAndPeriodQuery34(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Genuine Joy') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Liz Beebe','Maggie Rose') group by artist_name`)
 }
 //35
 function GetArtistAndPeriodQuery35(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Great Peacock') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Mark Erelli','Mark Fredson') group by artist_name`)
 }
 //34
 function GetArtistAndPeriodQuery36(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Humming House') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Melodic Caring rockSTARS','Michael Martin Murphey') group by artist_name`)
 }
 //34
 function GetArtistAndPeriodQuery37(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Israel Nash') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Michael McArthur','Mitchell Tenpenny') group by artist_name`)
 }
 //34
 function GetArtistAndPeriodQuery38(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Jaclyn Kenyon') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('My Sister, My Brother','Of Sea And Stone') group by artist_name`)
 }
 //34
 function GetArtistAndPeriodQuery39(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Jamie Isaac') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Osiris','Phil Madeira') group by artist_name`)
 }
 //34
 function GetArtistAndPeriodQuery40(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Jen Cloher') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Private Drive','Prophets and Outlaws') group by artist_name`)
 }
 //34
 function GetArtistAndPeriodQuery41(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Jerry Joseph') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Rich Jacques','River Whyless') group by artist_name`)
 }
 //34
 function GetArtistAndPeriodQuery42(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Jesse Daniel') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Roger Clyne & The Peacemakers','Sam Burchfield') group by artist_name`)
 }
 //34
 function GetArtistAndPeriodQuery43(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Jesse Labelle') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Sarah Siskind','Scott Hirsch') group by artist_name`)
 }
 //34
 function GetArtistAndPeriodQuery44(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Jordan Rager') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Scott Mulvahill','Sean McConnell') group by artist_name`)
 }
 //34
 function GetArtistAndPeriodQuery45(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Josh Rennie-Hynes') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Skip Ewing','Stephanie Urbina Jones') group by artist_name`)
 }
 //34
 function GetArtistAndPeriodQuery46(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Joshua Davis') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Steve Moakler','Suzanne Santo') group by artist_name`)
 }
 //34
 function GetArtistAndPeriodQuery47(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Julia Cole') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('The Bacon Brothers','The Court and Spark') group by artist_name`)
 }
 //34
 function GetArtistAndPeriodQuery48(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Justin Wade Tam') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('The Great Dying','The Joy Formidable') group by artist_name`)
 }
 //34
 function GetArtistAndPeriodQuery49(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Kaitlin Butts') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('The Lonely Biscuits','The Mammals') group by artist_name`)
 }
 //34
 function GetArtistAndPeriodQuery50(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Katie Schecter') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('The McCrary Sisters','The Shootouts') group by artist_name`)
 }
 //34
 function GetArtistAndPeriodQuery51(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Ken Yates') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('The Snarlin Yarns','The Way Down Wanderers') group by artist_name`)
 }
 //34
 function GetArtistAndPeriodQuery52(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Kings Of Spade') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('The Wilder Blue','Tristan Bushman') group by artist_name`)
 }
 //34
 function GetArtistAndPeriodQuery53(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Kirby Brown') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Two Bird Stone','Vandoliers') group by artist_name`)
 }
 //34
 function GetArtistAndPeriodQuery54(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Korby Lenker') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Wallis Bird','Will Hoge') group by artist_name`)
 }
 //34
 function GetArtistAndPeriodQuery55(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Kyle Nix') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Will Kimbrough','Williamson Brothers') group by artist_name`)
 }
 //34
 function GetArtistAndPeriodQuery56(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('LEVI WARE') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Tim Hause','Pony Bradshaw') group by artist_name`)
 }
 //34
 function GetArtistAndPeriodQuery57(pool) {
-  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('LUX') group by artist_name`)
+  return pool.query(`select distinct (artist_name), array_agg(distinct(period_order)) as periods from main where artist_name in ('Ward Davis') group by artist_name`)
 }
 //34
 function GetArtistAndPeriodQuery58(pool) {
